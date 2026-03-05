@@ -1,0 +1,19 @@
+{
+  "name": "syntaxandstories",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {
+    "dev": "tailwindcss -i ./input.css -o ./static/css/output.css --watch",
+    "build": "tailwindcss -i ./static/input.css -o ./output.css --minify",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@tailwindcss/postcss": "^4.2.1",
+    "postcss": "^8.5.6"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.2.1"
+  }
+}
