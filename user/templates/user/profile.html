@@ -69,6 +69,10 @@
         <section class="text-gray-700 leading-relaxed mb-6">
             {{ user.profile.bio }}
         </section>
+        {% else%}
+        <p class="text-2xl font-bold text-slate-600 my-4">
+            N/A
+        </p>
         {% endif %}
         <!-- Complements -->
         <ul class="list-none sm:flex gap-3 space-y-3">
@@ -121,7 +125,7 @@
                 <p class="text-sm">Following</p>
             </li>
             <li>
-                <p class="sm:text-4xl text-2xl">{{user.like_set.count|default:"0"}}</p>
+                <p class="sm:text-4xl text-2xl">{{total_likes|default:"0"}}</p>
                 <p class="text-sm">Likes</p>
             </li>
         </ul>

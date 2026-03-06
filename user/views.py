@@ -3,8 +3,10 @@ from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
+from django.db.models import Sum, Count
 from .forms import UserCreationForm, ProfileForm
 from .models import UserProfile, Follow
+from syntaxandstories.models import Post
 
 # Create your views here.
 
@@ -47,10 +49,20 @@ def login_view(request):
 def profile_view(request, username):
     user = get_object_or_404(User.objects.select_related("profile"), username=username)
     is_owner = request.user == user
-
+    posts = (
+        Post.objects.filter(author=user)
+        .prefetch_related('comments')
+        .annotate(
+            comments_count=Count('comments', distinct=True)
+        )
+        .order_by("-created_at")
+        )
     followers_count = user.followers.count
     following_count = user.following.count
-    likes_count = user.likes.count
+    
+    total_likes = posts.aggregate(
+        total=Sum('likes_count')
+    )['total'] or 0
 
     context = {
         'user':user,
@@ -58,7 +70,7 @@ def profile_view(request, username):
         'is_owner':is_owner,
         'followers_count':followers_count,
         'following_count':following_count,
-        'likes_count':likes_count
+        'total_likes':total_likes
     }
     return render(request, 'user/profile.html', context)
 
@@ -76,6 +88,7 @@ def edit_profile_view(request, username):
                 return redirect('user:profile', username=request.user.username)
         else:
             form = ProfileForm(instance=user_profile)
+
 
     context = {
             'form':form,

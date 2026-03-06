@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.db import transaction
-from django.db.models import Count, Prefetch
+from django.db.models import Count, Prefetch, F
 from .models import Post, Comment, Like
 from user.models import Follow
 
@@ -31,7 +31,6 @@ def feed(request):
         .select_related('author')
         .prefetch_related('comments', user_likes_prefetch)
         .annotate(
-            likes_count=Count('likes', distinct=True),
             comments_count=Count('comments', distinct=True)
         )
         .order_by("-created_at")
@@ -72,15 +71,18 @@ def toggle_like(request, post_id):
 
             if created:
                 liked = True
+                Post.objects.filter(id=post.id).update(likes_count=F('likes_count') + 1)
 
             else:
                 like.delete()
                 liked = False
+                Post.objects.filter(id=post.id).update(likes_count=F('likes_count') - 1)
 
-            likes_count = post.likes.count()
+            post.refresh_from_db()
+
 
         return JsonResponse({
             'liked':liked,
-            'likes_count':likes_count
+            'likes_count':post.likes_count
         })
 

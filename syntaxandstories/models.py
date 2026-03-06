@@ -7,11 +7,26 @@ from django.core.validators import FileExtensionValidator
 
 
 class Post(models.Model):
+    class Category(models.TextChoices):
+        TECH = 'TECH', 'Tech'
+        STORY = 'STORY', 'Story'
+        LIFESTYLE = 'LIFESTYLE', 'Lifestyle'
+        OTHER = 'OTHER', 'Other'
+
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=200, null=True, blank=True)
     content = models.TextField(max_length=6000, null=True, blank=True)
     media = models.FileField(upload_to='post_media/', null=True, blank=True, validators=[FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'png', 'gif', 'mp4', 'mov', 'avi'])])
     created_at = models.DateTimeField(auto_now_add=True)
+
+    category = models.CharField(
+        max_length=10,
+        choices=Category.choices,
+        default=Category.OTHER,
+    )
+
+
+    likes_count = models.PositiveBigIntegerField(default=0)
 
 
     def __str__(self):
@@ -44,9 +59,13 @@ class Like(models.Model):
         return f'{self.user.username} likes {self.post.author.username}\'s post "{self.post.title}"'
 
 
+class SavedPosts(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
 
-
-
-
-
-
+    def __str__(self):
+        return f"{self.user} saved {self.post.author}'s post {self.post}"
+    
+    class Meta:
+        verbose_name_plural = 'Saved Posts'
