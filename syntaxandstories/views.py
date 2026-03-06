@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.db import transaction
 from django.db.models import Count, Prefetch, F
-from .models import Post, Comment, Like
+from .models import Post, Comment, Like, SavedPosts
 from user.models import Follow
 
 # Create your views here.
@@ -20,6 +20,11 @@ def feed(request):
 
     following_ids = list(following_ids) + [request.user.id]
 
+    user_saved_prefetch =Prefetch(
+        'save',
+        to_attr='user_saved'
+    )
+
     user_likes_prefetch = Prefetch(
         'likes',
         queryset=Like.objects.filter(user=request.user),
@@ -29,7 +34,7 @@ def feed(request):
     posts = (
         Post.objects.filter(author_id__in=following_ids)
         .select_related('author')
-        .prefetch_related('comments', user_likes_prefetch)
+        .prefetch_related('comments', user_likes_prefetch, user_saved_prefetch)
         .annotate(
             comments_count=Count('comments', distinct=True)
         )
@@ -86,3 +91,31 @@ def toggle_like(request, post_id):
             'likes_count':post.likes_count
         })
 
+@login_required
+def save_post(request, post_id):
+    if request.method == 'POST':
+        post = get_object_or_404(Post, id=post_id)
+
+        with transaction.atomic():
+            save, created = SavedPosts.objects.get_or_create(
+                user=request.user,
+                post=post
+            )
+            
+            if created:
+                saved = True
+                # Post.objects.filter(id=post.id).update(saves_count=F('saves_count') + 1)
+            else:
+                save.delete()
+                saved = False
+                # Post.objects.filter(id=post.id).update(saves_count=F('saves_count') - 1)
+        
+            post.refresh_from_db()
+
+        
+        return JsonResponse({
+            'saved':saved,
+            # 'saves_count':post.saves_count
+        })
+
+            

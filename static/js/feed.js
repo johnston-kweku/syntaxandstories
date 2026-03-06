@@ -41,6 +41,34 @@ document.querySelectorAll(".post-content").forEach(content => {
 
 })
 
+const saveBtn = document.querySelectorAll(".save-btn")
+
+saveBtn.forEach(btn => {
+
+    btn.addEventListener("click", () => {
+        const postIdSave = btn.dataset.postIdSave
+
+        fetch(`/save/${postIdSave}/`, {
+            method:'POST',
+            headers: {
+                'X-CSRFToken':getCookie("csrftoken"),
+                'content-Type':'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+
+            if(data.saved) {
+                btn.classList.add("fill-purple-600")
+
+            }else{
+                btn.classList.remove("fill-purple-600")
+            }
+        })
+    })
+})
+
+
 
  document.addEventListener("DOMContentLoaded", () => {
 

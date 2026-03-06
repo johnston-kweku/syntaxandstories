@@ -27,6 +27,7 @@ class Post(models.Model):
 
 
     likes_count = models.PositiveBigIntegerField(default=0)
+    saves_count = models.PositiveBigIntegerField(default=0)
 
 
     def __str__(self):
@@ -60,9 +61,10 @@ class Like(models.Model):
 
 
 class SavedPosts(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='save')
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='save')
     created_at = models.DateTimeField(auto_now_add=True)
+
 
     def __str__(self):
         return f"{self.user} saved {self.post.author}'s post {self.post}"
