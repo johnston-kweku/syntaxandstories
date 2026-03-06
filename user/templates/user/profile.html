@@ -121,7 +121,7 @@
                 <p class="text-sm">Following</p>
             </li>
             <li>
-                <p class="sm:text-4xl text-2xl">{{likes_count|default:"0"}}</p>
+                <p class="sm:text-4xl text-2xl">{{user.like_set.count|default:"0"}}</p>
                 <p class="text-sm">Likes</p>
             </li>
         </ul>

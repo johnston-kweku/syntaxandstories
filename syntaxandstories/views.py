@@ -12,6 +12,7 @@ from user.models import Follow
 def home(request):
     return render(request, 'syntaxandstories/index.html')
 
+@login_required
 def feed(request):
     following_ids = Follow.objects.filter(
         follower=request.user
@@ -42,6 +43,7 @@ def feed(request):
 
     return render(request, 'syntaxandstories/feed.html', context)
 
+@login_required
 def toggle_like(request, post_id):
     """
     Toggle the like status of a post for the authenticated user.
@@ -73,7 +75,7 @@ def toggle_like(request, post_id):
 
             else:
                 like.delete()
-                liked
+                liked = False
 
             likes_count = post.likes.count()
 
