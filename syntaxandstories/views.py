@@ -1,7 +1,10 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
+from django.db import transaction
+from django.db.models import Count, Prefetch
 from .models import Post, Comment, Like
+from user.models import Follow
 
 # Create your views here.
 
@@ -10,9 +13,34 @@ def home(request):
     return render(request, 'syntaxandstories/index.html')
 
 def feed(request):
-    # posts = Post.objects.all().prefetch_related('comments', 'likes').order_by('-created_at')
-    pass
-    return render(request, 'syntaxandstories/feed.html')
+    following_ids = Follow.objects.filter(
+        follower=request.user
+    ).values_list('following_id', flat=True)
+
+    following_ids = list(following_ids) + [request.user.id]
+
+    user_likes_prefetch = Prefetch(
+        'likes',
+        queryset=Like.objects.filter(user=request.user),
+        to_attr='user_liked'
+    )
+
+    posts = (
+        Post.objects.filter(author_id__in=following_ids)
+        .select_related('author')
+        .prefetch_related('comments', user_likes_prefetch)
+        .annotate(
+            likes_count=Count('likes', distinct=True),
+            comments_count=Count('comments', distinct=True)
+        )
+        .order_by("-created_at")
+    )
+
+    context = {
+        'posts':posts
+    }
+
+    return render(request, 'syntaxandstories/feed.html', context)
 
 def toggle_like(request, post_id):
     """
@@ -34,20 +62,20 @@ def toggle_like(request, post_id):
     if request.method == 'POST':
         post = get_object_or_404(Post, id=post_id)
 
-        
-        like, created = Like.objects.get_or_create(
-            user=request.user,
-            post=post
-        )
+        with transaction.atomic():
+            like, created = Like.objects.get_or_create(
+                user=request.user,
+                post=post
+            )
 
-        if created:
-            liked = True
+            if created:
+                liked = True
 
-        else:
-            like.delete()
-            liked
+            else:
+                like.delete()
+                liked
 
-        likes_count = post.likes.count()
+            likes_count = post.likes.count()
 
         return JsonResponse({
             'liked':liked,
