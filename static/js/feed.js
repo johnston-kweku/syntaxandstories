@@ -9,3 +9,4 @@ expandEl.addEventListener("click", () => {
 postMedia.addEventListener("click", () => {
     postMedia.requestFullscreen()
 })
+
