@@ -62,13 +62,20 @@ followBtn.forEach(btn => {
             document.querySelectorAll(`[data-post-author="${postAuthor}"]`)
             .forEach(button => {
                 const text = button.querySelector(".follow-text") 
+                const icon = button.querySelector(".follow-svg")
                 const isFollowing = data.is_following ?? data.following;
                 if(isFollowing) {
                     text.textContent = 'Unfollow'
+                    text.classList.remove("text-purple-700")
                     text.classList.add("text-red-500")
+                    icon.classList.remove("stroke-purple-700")
+                    icon.classList.add("stroke-red-500")
                 } else {
                     text.textContent = 'Follow'
                     text.classList.remove("text-red-500")
+                    text.classList.add("text-purple-700")
+                    icon.classList.remove("stroke-red-500")
+                    icon.classList.add("stroke-purple-700")
                 }
             })
         })

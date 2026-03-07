@@ -22,20 +22,21 @@
 }
 </style>
 </head>
-<body class="bg-purple-50 mt-20 sm:mt-28">
-    <nav class="bg-white/80 fixed z-50 mb-4 top-0 w-full sm:flex justify-between p-3 backdrop-blur-md shadow-xl">
+<body class="bg-purple-50 mt-14 sm:mt-28">
+    <nav class="bg-white/80 fixed z-50 mb-4 top-0 w-full flex justify-between p-3 backdrop-blur-md shadow-xl">
         <div class="flex items-center gap-3 justify-start">
-            <a href="{% url 'syntaxandstories:home' %}" class="bg-linear-to-r  from-violet-600 to-fuchsia-600 px-4 py-3 rounded-2xl hover:scale-110 transition hover:cursor-pointer">
+            <a href="{% url 'syntaxandstories:home' %}" class="bg-linear-to-r  from-violet-600 to-fuchsia-600 px-4 md:px-3 md:py-2 py-3 rounded-2xl hover:scale-110 transition hover:cursor-pointer">
                 <svg class="stroke-white w-6 hover:scale-100" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5" />
                 </svg>
             </a>
-            <p class="text-2xl font-extrabold bg-linear-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
+            <p class="text-2xl md:text-xl font-extrabold bg-linear-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
                 Syntax & Stories
             </p>
         </div>
 
-        <div class="hidden sm:flex gap-3 text-xl">
+        <!-- Navigation Links -->
+        <div class="hidden md:flex items-center  text-xl">
             <a href="{% url 'syntaxandstories:home' %}">
             <div class="flex items-center gap-2 hover:bg-gray-50 rounded-2xl
                 {% if request.resolver_match.url_name == 'home' %}
@@ -157,21 +158,90 @@
 
 
 
+
+    <!-- Mobile Navigation -->
+    <nav class="md:hidden flex items-center justify-between gap-3 bg-white/40 backdrop-blur-md shadow-2xl bottom-0 fixed left-0 right-0 z-50 border-t border-gray-200">
+            <!-- Feed -->
+        {% if user.is_authenticated %}
+        <a href="{% url 'syntaxandstories:feed' %}" class="flex flex-col text-gray-700 items-center p-3">
+            <svg class="w-5 h-5 stroke-2 {% if request.resolver_match.url_name == 'feed' %} stroke-purple-500 {% endif %}" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" >
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
+            </svg>
+            <p class="text-sm {% if request.resolver_match.url_name == 'feed' %} text-purple-500 {% endif %}">
+                Feed
+            </p>
+        </a>
+        {% endif %}
+        
+        <!-- Chats -->
+        {% if user.is_authenticated %}
+        <a href="#" class="flex flex-col items-center text-gray-700 p-2">
+            <svg class="w-5 h-5 stroke-2 {% if request.resolver_match.url_name == 'chat' %} stroke-purple-500 {% endif%}" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" >
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48.432.447.74 1.04.586 1.641a4.483 4.483 0 0 1-.923 1.785A5.969 5.969 0 0 0 6 21c1.282 0 2.47-.402 3.445-1.087.81.22 1.668.337 2.555.337Z" />
+            </svg>
+            <p class="text-sm {% if request.resolver_match.url_name == 'chat' %} text-purple-500 {% endif %}">
+                Chats
+            </p>
+        </a>
+        {% endif %}
+        
+        
+        <!-- Create Post -->
+         {% if user.is_authenticated %}
+        <a href="#" class="flex flex-col items-center justify-center gap-1 transition-colors text-gray-700">
+            <div class="w-10 h-10 bg-linear-to-r from-violet-600 to-fuchsia-600 rounded-full flex items-center justify-center -mt-2 shadow-lg">
+                <svg class="w-5 h-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
+                </svg>
+            </div>
+             <p class="text-sm font-medium">
+                Create
+            </p>
+        </a>
+        {% endif %}
+            
+            
+            <!-- Profile -->
+             {% if user.is_authenticated %}
+            <a href="{% url 'user:profile' request.user.username %}" class="flex flex-col items-center p-3 text-gray-700">
+                <svg class="w-5 h-5 stroke-2 {% if 'profile' in request.resolver_match.url_name %} stroke-purple-600 {% endif %}" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                </svg>
+                <p class="text-sm {% if 'profile' in request.resolver_match.url_name %} text-purple-600 {% endif %}">
+                    Profile
+                </p>
+            </a>
+            {% endif %}
+            
+            <a href="{% url 'syntaxandstories:home' %}" class="flex flex-col items-center p-3 text-gray-700">
+                <svg class="w-5 h-5 stroke-2 {% if 'home' in request.resolver_match.url_name %} stroke-purple-700{% endif %}" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+                </svg>
+                <p class="text-sm {% if request.resolver_match.url_name == 'home' %} text-purple-700 {% endif %}">
+                    Home
+                </p>
+            </a>
+            
+        </nav>
+
+
+
+
     <script>
         function getCookie(name) {
-    let cookieValue = null
-    if (document.cookie && document.cookie !== "") {
-        const cookies = document.cookie.split(";")
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim()
-            if (cookie.substring(0, name.length + 1) === (name + "=")) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1))
-                break
+            let cookieValue = null
+            if (document.cookie && document.cookie !== "") {
+                const cookies = document.cookie.split(";")
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim()
+                    if (cookie.substring(0, name.length + 1) === (name + "=")) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1))
+                        break
+                    }
+                }
             }
+            return cookieValue
         }
-    }
-    return cookieValue
-}
     </script>
     {% block content %}{% endblock %}
 </body>
