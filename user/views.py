@@ -65,13 +65,19 @@ def profile_view(request, username):
         total=Sum('likes_count')
     )['total'] or 0
 
+    is_following = Follow.objects.filter(
+        follower=request.user,
+        following=user
+    )
+
     context = {
         'user':user,
         'user_profile':user.profile,
         'is_owner':is_owner,
         'followers_count':followers_count,
         'following_count':following_count,
-        'total_likes':total_likes
+        'total_likes':total_likes,
+        'is_following':is_following
     }
     return render(request, 'user/profile.html', context)
 

@@ -28,7 +28,7 @@
             <div class="flex gap-3 items-center">
                 <a href="{% url 'user:profile' post.author.username %}" class="hover:text-violet-600">
                     {% if post.author.profile.profile_picture %}
-                    <img src="{{post.author.profile.profile_picture.url}}" class="w-12 h-12 rounded-full border-2 border-violet-100">
+                    <img src="{{post.author.profile.profile_picture.url}}" class="w-12 h-12 rounded-full border-2 border-violet-100 hover:border-violet-700">
                     {% else %}
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12 rounded-full border-2 border-violet-100">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
@@ -64,9 +64,10 @@
                 </div>
             </div>
             
+            <!-- Follow button -->
+            {% if post.author != request.user %}
             <div  class=" items-center  pr-4 pt-4">
-                {% if post.author != request.user %}
-                <div data-post-author="{{post.author.username}}" class="follow-btn cursor-pointer text-sm text-purple-700 font-bold flex gap-1 {% if post.author_is_followed %} text-red-500 {% endif %}">
+                <div data-post-author="{{post.author.username}}" class="follow-btn cursor-pointer text-sm font-bold flex gap-1 text-purple-700 ">
                 <svg  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 stroke-purple-700">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z" />
                 </svg>
@@ -78,8 +79,8 @@
                         {% endif %}
                     </p>
             </div>
-            {% endif %}
-            </div>
+        </div>
+        {% endif %}
         <!-- End of Author section -->
         </div>
         <!-- Post title -->
@@ -150,6 +151,7 @@
                 </div>
 
                 <!-- Save -->
+                 {% if post.author != request.user %}
                  <div class="flex gap-2">
                     <svg  data-post-id-save="{{post.id}}" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="save-btn w-4 hover:stroke-purple-600 stroke-purple-600 {% if post.user_saved %} fill-purple-600 {% endif %}">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z" />
@@ -158,6 +160,7 @@
                         {{post.saves_count}}
                     </p>
                  </div>
+                 {% endif %}
             </div>
         </div>
             
