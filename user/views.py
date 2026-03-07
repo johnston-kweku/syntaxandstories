@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.db.models import Sum, Count
+from django.db import transaction
 from .forms import UserCreationForm, ProfileForm
 from .models import UserProfile, Follow
 from syntaxandstories.models import Post
@@ -98,32 +99,40 @@ def edit_profile_view(request, username):
 
 
 
-
+@login_required
 def toggle_follow(request, username):
-    if request.method == 'POSt':
+    if request.method == 'POST':
+
         user_to_follow = get_object_or_404(User, username=username)
 
         if user_to_follow == request.user:
             return JsonResponse({
                 'error':'You cannot follow yourself'
             })
-        
-        follow, created = Follow.objects.get_or_create(
-            follower=request.user,
-            following=user_to_follow
-        )
 
-        if created:
-            following=True
-        else:
-            follow.delete()
-            following = False
+        with transaction.atomic():    
+            follow, created = Follow.objects.get_or_create(
+                follower=request.user,
+                following=user_to_follow
+            )
+            
+            if created:
+                following=True
+            else:
+                follow.delete()
+                following = False
 
-        followers_count = user_to_follow.followers.count()
+            followers_count = user_to_follow.followers.count()
+
+            is_following = Follow.objects.filter(
+                follower=request.user,
+                following=user_to_follow
+            ).exists()
 
         return JsonResponse({
             'following':following,
-            'followers_count':followers_count
+            'followers_count':followers_count,
+            'is_following':is_following
         })
 
     

@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.db import transaction
-from django.db.models import Count, Prefetch, F
+from django.db.models import Count, Prefetch, F, Exists, OuterRef
 from .models import Post, Comment, Like, SavedPosts
 from user.models import Follow
 
@@ -20,10 +20,19 @@ def feed(request):
 
     following_ids = list(following_ids) + [request.user.id]
 
-    user_saved_prefetch =Prefetch(
-        'save',
-        to_attr='user_saved'
+
+    follow_subquery = Follow.objects.filter(
+        follower=request.user,
+        following=OuterRef('author')
     )
+
+
+
+    user_saves_prefetch = Prefetch(
+    "saved_by",
+    queryset=SavedPosts.objects.filter(user=request.user),
+    to_attr="user_saved"
+)
 
     user_likes_prefetch = Prefetch(
         'likes',
@@ -34,9 +43,10 @@ def feed(request):
     posts = (
         Post.objects.filter(author_id__in=following_ids)
         .select_related('author')
-        .prefetch_related('comments', user_likes_prefetch, user_saved_prefetch)
+        .prefetch_related('comments', user_likes_prefetch, user_saves_prefetch)
         .annotate(
-            comments_count=Count('comments', distinct=True)
+            comments_count=Count('comments', distinct=True),
+            author_is_followed=Exists(follow_subquery)
         )
         .order_by("-created_at")
     )
@@ -104,18 +114,18 @@ def save_post(request, post_id):
             
             if created:
                 saved = True
-                # Post.objects.filter(id=post.id).update(saves_count=F('saves_count') + 1)
+                Post.objects.filter(id=post.id).update(saves_count=F('saves_count') + 1)
             else:
                 save.delete()
                 saved = False
-                # Post.objects.filter(id=post.id).update(saves_count=F('saves_count') - 1)
+                Post.objects.filter(id=post.id).update(saves_count=F('saves_count') - 1)
         
             post.refresh_from_db()
 
         
         return JsonResponse({
             'saved':saved,
-            # 'saves_count':post.saves_count
+            'saves_count':post.saves_count
         })
 
             

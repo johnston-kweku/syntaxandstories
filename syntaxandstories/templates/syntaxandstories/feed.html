@@ -24,51 +24,73 @@
         
 
         <!-- Author -->
-        <div class="w-full pl-8 py-3 flex  gap-3">
-            <a href="{% url 'user:profile' post.author.username %}" class="hover:text-violet-600">
-            {% if post.author.profile.profile_picture %}
-                <img src="{{post.author.profile.profile_picture.url}}" class="w-12 h-12 rounded-full border-2 border-violet-100">
-                {% else %}
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12 rounded-full border-2 border-violet-100">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                </svg>
-                {% endif %}
-            </a>
-
-
-            <div class="flex flex-col items-start text-gray-800">
-                {% if request.user == post.author %}
-                <p class="font-bold text-center text-lg mt-2">
-                    Me
-                </p>
-                {% elif post.author.profile.profile_name %}
-                <p class="font-bold text-center text-lg mt-2 flex flex-col">
-                    {{post.author.profile.profile_name}}
-                </p>
-                {% if post.author.profile.skills %}
-                <p class="text-sm text-gray-500">
-                    {{post.author.profile.skills}}
-                </p>
-                {% endif %}
-                {% else %}
-                <p class="font-bold text-center text-lg mt-2">
-                    {{post.author.username}}
-                </p>
-                {% if post.author.profile.skills %}
-                <p>
-                    {{post.author.profile.skills}}
-                </p>
-                {% endif %}
-                {% endif%}
+        <div class="w-full pl-8 py-3 flex justify-between flex-wrap gap-3">
+            <div class="flex gap-3 items-center">
+                <a href="{% url 'user:profile' post.author.username %}" class="hover:text-violet-600">
+                    {% if post.author.profile.profile_picture %}
+                    <img src="{{post.author.profile.profile_picture.url}}" class="w-12 h-12 rounded-full border-2 border-violet-100">
+                    {% else %}
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12 rounded-full border-2 border-violet-100">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                    </svg>
+                    {% endif %}
+                </a>
+                
+                
+                <div class="flex flex-col items-start text-gray-800">
+                    {% if request.user == post.author %}
+                    <p class="font-bold text-center text-lg mt-2">
+                        Me
+                    </p>
+                    {% elif post.author.profile.profile_name %}
+                    <p class="font-bold text-center text-lg mt-2 flex flex-col">
+                        {{post.author.profile.profile_name}}
+                    </p>
+                    {% if post.author.profile.skills %}
+                    <p class="text-sm text-gray-500">
+                        {{post.author.profile.skills}}
+                    </p>
+                    {% endif %}
+                    {% else %}
+                    <p class="font-bold text-center text-lg mt-2">
+                        {{post.author.username}}
+                    </p>
+                    {% if post.author.profile.skills %}
+                    <p>
+                        {{post.author.profile.skills}}
+                    </p>
+                    {% endif %}
+                    {% endif%}
+                </div>
             </div>
-
             
+            <div  class=" items-center  pr-4 pt-4">
+                {% if post.author != request.user %}
+                <div data-post-author="{{post.author.username}}" class="follow-btn cursor-pointer text-sm text-purple-700 font-bold flex gap-1 {% if post.author_is_followed %} text-red-500 {% endif %}">
+                <svg  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 stroke-purple-700">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z" />
+                </svg>
+                    <p class="follow-text">
+                        {% if post.author_is_followed %}
+                            Unfollow
+                        {% else %}
+                            Follow
+                        {% endif %}
+                    </p>
+            </div>
+            {% endif %}
+            </div>
         <!-- End of Author section -->
         </div>
         <!-- Post title -->
-        {% if post.title %}
+       
             <div class="pl-8 flex justify-between">
-                <p class="font-bold sm:text-2xl mb-2 hover:text-violet-600 cursor-pointer transition-colors">{{post.title|upper}}</p>
+                <p class="font-bold sm:text-2xl mb-2 hover:text-violet-600 cursor-pointer transition-colors">
+                    {% if post.title %}
+                        {{post.title|upper}}
+                    {% endif %}
+                </p>
+       
                 
                 <!-- Category -->
                 <div>
@@ -77,7 +99,6 @@
                     </p>
                 </div>
             </div>
-        {% endif %}
 
         {% if post.content %}
             <!-- Post content -->

@@ -41,22 +41,66 @@ document.querySelectorAll(".post-content").forEach(content => {
 
 })
 
+
+
+const followBtn = document.querySelectorAll(".follow-btn")
+
+followBtn.forEach(btn => {
+    btn.addEventListener("click", () => {
+
+        const postAuthor = btn.dataset.postAuthor
+
+        fetch(`/user/follow/${postAuthor}/`, {
+            method:'POST',
+            headers:{
+                'X-CSRFToken': getCookie("csrftoken"),
+                'Content-Type':'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            document.querySelectorAll(`[data-post-author="${postAuthor}"]`)
+            .forEach(button => {
+                const text = button.querySelector(".follow-text") 
+                const isFollowing = data.is_following ?? data.following;
+                if(isFollowing) {
+                    text.textContent = 'Unfollow'
+                    text.classList.add("text-red-500")
+                } else {
+                    text.textContent = 'Follow'
+                    text.classList.remove("text-red-500")
+                }
+            })
+        })
+    })
+})
+
+
+
+
+
+
+
+
 const saveBtn = document.querySelectorAll(".save-btn")
 
 saveBtn.forEach(btn => {
 
     btn.addEventListener("click", () => {
         const postIdSave = btn.dataset.postIdSave
-
+        btn.disabled = true
         fetch(`/save/${postIdSave}/`, {
             method:'POST',
             headers: {
                 'X-CSRFToken':getCookie("csrftoken"),
-                'content-Type':'application/json'
+                'Content-Type':'application/json'
             }
         })
         .then(res => res.json())
         .then(data => {
+
+            const countSpan = btn.parentElement.querySelector(".save-count")
+            countSpan.textContent = data.saves_count
 
             if(data.saved) {
                 btn.classList.add("fill-purple-600")
@@ -64,6 +108,9 @@ saveBtn.forEach(btn => {
             }else{
                 btn.classList.remove("fill-purple-600")
             }
+        })
+        .finally(() => {
+            btn.disabled = false
         })
     })
 })

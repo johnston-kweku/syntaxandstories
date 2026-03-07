@@ -61,8 +61,8 @@ class Like(models.Model):
 
 
 class SavedPosts(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='save')
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='save')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='saved_posts')
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='saved_by')
     created_at = models.DateTimeField(auto_now_add=True)
 
 
