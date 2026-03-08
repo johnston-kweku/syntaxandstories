@@ -22,7 +22,7 @@
 }
 </style>
 </head>
-<body class="bg-purple-50 mt-14 sm:mt-28">
+<body class="bg-purple-50 mt-20 sm:mt-24">
     <nav class="bg-white/80 fixed z-50 mb-4 top-0 w-full flex justify-between p-3 backdrop-blur-md shadow-xl">
         <div class="flex items-center gap-3 justify-start">
             <a href="{% url 'syntaxandstories:home' %}" class="bg-linear-to-r  from-violet-600 to-fuchsia-600 px-4 md:px-3 md:py-2 py-3 rounded-2xl hover:scale-110 transition hover:cursor-pointer">
@@ -37,22 +37,7 @@
 
         <!-- Navigation Links -->
         <div class="hidden md:flex items-center  text-xl">
-            <a href="{% url 'syntaxandstories:home' %}">
-            <div class="flex items-center gap-2 hover:bg-gray-50 rounded-2xl
-                {% if request.resolver_match.url_name == 'home' %}
-                 text-purple-700
-                 bg-purple-50 rounded-xl 
-                 {% else%}
-                text-slate-400
-                {% endif%}
-                text-lg px-3 py-2">
-                <svg class="w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
-                </svg>
-
-                    Home
-                </div>
-            </a>
+            {% if user.is_authenticated %}
             <a href="{% url 'syntaxandstories:feed' %}">
             <div  class="flex items-center gap-2 hover:bg-gray-50 rounded-2xl
                 {% if request.resolver_match.url_name == 'feed' %}
@@ -85,7 +70,8 @@
                 Chats
                 </div>
             </a>
-            {% if request.user.is_authenticated %}
+
+
             <a href="{% url 'user:profile' request.user.username %}">
                 <div  class="flex items-center gap-2 hover:bg-gray-50 rounded-2xl
                 {% if 'profile' in request.resolver_match.url_name %}
@@ -160,7 +146,7 @@
 
 
     <!-- Mobile Navigation -->
-    <nav class="md:hidden flex items-center justify-between gap-3 bg-white/40 backdrop-blur-md shadow-2xl bottom-0 fixed left-0 right-0 z-50 border-t border-gray-200">
+    <nav class="md:hidden flex items-center {% if user.is_authenticated %}justify-between {% else %} justify-center {% endif %} gap-3 bg-white/40 backdrop-blur-md shadow-2xl bottom-0 fixed left-0 right-0 z-50 border-t border-gray-200">
             <!-- Feed -->
         {% if user.is_authenticated %}
         <a href="{% url 'syntaxandstories:feed' %}" class="flex flex-col text-gray-700 items-center p-3">
@@ -212,15 +198,40 @@
                 </p>
             </a>
             {% endif %}
-            
-            <a href="{% url 'syntaxandstories:home' %}" class="flex flex-col items-center p-3 text-gray-700">
-                <svg class="w-5 h-5 stroke-2 {% if 'home' in request.resolver_match.url_name %} stroke-purple-700{% endif %}" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+
+            {% if user.is_authenticated %}
+            <a href="{% url 'user:logout' %}" class="flex flex-col items-center p-3 text-gray-700">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15" />
                 </svg>
-                <p class="text-sm {% if request.resolver_match.url_name == 'home' %} text-purple-700 {% endif %}">
-                    Home
+                <p class="text-sm">
+                    Logout
                 </p>
             </a>
+            {% endif %}
+
+            {% if not user.is_authenticated %}
+            <a href="{% url 'user:login' %}" class="flex flex-col items-center p-3 text-gray-700">
+                <svg class="w-5 h-5 stroke-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15" />
+                </svg>
+                <p class="text-sm">
+                    Login
+                </p>
+
+            </a>
+
+            <a href="{% url 'user:sign_up' %}" class="flex flex-col items-center p-3 text-gray-700">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z" />
+                </svg>
+                <p class="text-sm">
+                    Sign Up
+                </p>
+            </a>
+            {% endif %}
+
+            
             
         </nav>
 

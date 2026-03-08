@@ -15,31 +15,24 @@ document.querySelectorAll(".post-media").forEach(img => {
     })
 })
 
-// document.querySelectorAll(".expand-btn").forEach(btn => {
-//     btn.addEventListener("click", () => {
 
-//     })
-// })
 
 
 document.querySelectorAll(".post-content").forEach(content => {
-    let text = content.textContent
-    const hashContainer = document.querySelectorAll(".hash-container")
-    text = text.split(' ')
+    const postContent = content.dataset.postContent;
+    const hashContainer = content.closest('div').querySelector(".hash-container"); // target the container in the same post
+    const words = postContent.split(/\s+/); // split by any whitespace
 
-    for(word of text) {
-        if(word.startsWith("#")) {
-            hashContainer.forEach(tag => {
-                tag.innerHTML += `
-                <p class="px-3 py-1 mb-2 bg-gray-100 text-gray-700 rounded-lg text-xs hover:bg-gray-200 cursor-pointer transition-colors">
-                ${word}
-                </p>
-                `
-            })
+    words.forEach(word => {
+        if (word.startsWith("#")) {
+            const tagElement = document.createElement("p");
+            tagElement.dataset.hashtag = word.slice(1); 
+            tagElement.className = "px-3 py-1 mb-2 bg-gray-100 text-gray-700 rounded-lg text-xs hover:bg-gray-200 cursor-pointer transition-colors";
+            tagElement.textContent = word;
+            hashContainer.appendChild(tagElement);
         }
-    }
-
-})
+    });
+});
 
 
 

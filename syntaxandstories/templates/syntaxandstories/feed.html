@@ -5,23 +5,21 @@
 
 {% for post in posts %}
 
-    <div class="bg-white shadow-lg hover:shadow-2xl {% if not post.media %} rounded-t-2xl {% endif %} rounded-b-2xl w-11/12 sm:w-8/12 mx-auto mb-10">
+    <div class="bg-white shadow-lg hover:shadow-2xl rounded-t-2xl rounded-b-2xl w-11/12 sm:w-8/12 mx-auto mb-10">
         <!-- Post media -->
         {% if post.media and post.is_video %}
-            <div class="w-full">
-                <video class="w-full post-media h-64 rounded-t-2xl" controls>
-                    <source src="{{post.media.url}}">
+            <div class="w-full rounded-t-2xl overflow-hidden">
+                <video class="post-media w-full aspect-video object-cover rounded-t-2xl" controls>
+                    <source src="{{ post.media.url }}">
                     Your browser does not support the video tag
                 </video>
             </div>
-        {% elif post.is_image %}
-        <!-- Post media -->
-            <div class="w-full">
-                <img src="{{post.media.url}}" class="w-full post-media h-60 rounded-t-2xl object-cover ">
+            {% elif post.is_image %}
+            <div class="w-full rounded-t-2xl overflow-hidden flex justify-center">
+                <img src="{{ post.media.url }}" 
+                    class="post-media max-w-full max-h-128 rounded-t-2xl object-contain">
             </div>
-        {% else%}
         {% endif %}
-        
 
         <!-- Author -->
         <div class="w-full pl-8 py-3 flex justify-between flex-wrap gap-3">
@@ -112,7 +110,7 @@
                         Expand
                     </p>
                 </div>
-                <p class="post-content text-slate-700 text-sm text-wrap line-clamp-3 mb-5">
+                <p data-post-content="{{post.content}}" class="post-content text-slate-700 text-sm text-wrap line-clamp-3 mb-5">
                     {{post.content}}
                 </p>
 
@@ -146,7 +144,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48.432.447.74 1.04.586 1.641a4.483 4.483 0 0 1-.923 1.785A5.969 5.969 0 0 0 6 21c1.282 0 2.47-.402 3.445-1.087.81.22 1.668.337 2.555.337Z" />
                     </svg>
                     <p class="text-sm pt-0.5">
-                        {{post.comments_count}}
+                        {{post.num_comments}}
                     </p>
                 </div>
 
@@ -164,12 +162,12 @@
             </div>
         </div>
             
-        <div class="w-11/12 flex gap-2 pl-6">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+        <div class="w-11/12 flex gap-2 pl-6 hover:text-violet-600 cursor-pointer">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 hover:stroke-violet-600">
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48.432.447.74 1.04.586 1.641a4.483 4.483 0 0 1-.923 1.785A5.969 5.969 0 0 0 6 21c1.282 0 2.47-.402 3.445-1.087.81.22 1.668.337 2.555.337Z" />
             </svg>
             <p class="mb-10">
-                View {{post.comments_count}} comments
+                View {{post.num_comments}} comments
             </p>
         </div>
     </div>

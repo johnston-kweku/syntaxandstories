@@ -3,36 +3,32 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.db import transaction
 from django.db.models import Count, Prefetch, F, Exists, OuterRef
+from django.utils import timezone
+from collections import defaultdict
 from .models import Post, Comment, Like, SavedPosts
 from user.models import Follow
 
 # Create your views here.
-
-
 def home(request):
     return render(request, 'syntaxandstories/index.html')
 
+
+
+
 @login_required
 def feed(request):
-    following_ids = Follow.objects.filter(
-        follower=request.user
-    ).values_list('following_id', flat=True)
-
-    following_ids = list(following_ids) + [request.user.id]
-
-
+    # Subquery to check if author is followed by the user
     follow_subquery = Follow.objects.filter(
         follower=request.user,
         following=OuterRef('author')
     )
 
-
-
+    # Prefetch user interactions
     user_saves_prefetch = Prefetch(
-    "saved_by",
-    queryset=SavedPosts.objects.filter(user=request.user),
-    to_attr="user_saved"
-)
+        "saved_by",
+        queryset=SavedPosts.objects.filter(user=request.user),
+        to_attr="user_saved"
+    )
 
     user_likes_prefetch = Prefetch(
         'likes',
@@ -40,19 +36,58 @@ def feed(request):
         to_attr='user_liked'
     )
 
+    # Fetch all posts
     posts = (
-        Post.objects.filter(author_id__in=following_ids)
+        Post.objects.all()
         .select_related('author')
         .prefetch_related('comments', user_likes_prefetch, user_saves_prefetch)
         .annotate(
-            comments_count=Count('comments', distinct=True),
+            num_likes=Count('likes', distinct=True),
+            num_comments=Count('comments', distinct=True),
             author_is_followed=Exists(follow_subquery)
         )
-        .order_by("-created_at")
+        .order_by('-created_at')
     )
 
+    # Scoring
+    now = timezone.now()
+    scored_posts = []
+
+    for post in posts:
+        hours_old = (now - post.created_at).total_seconds() / 3600
+
+        # Engagement score
+        engagement_score = post.num_likes * 1 + post.num_comments * 2
+
+        # Relationship boost
+        relationship_score = 5 if post.author_is_followed else 0
+
+        # Time decay
+        time_decay = hours_old * 0.5
+
+        score = engagement_score + relationship_score - time_decay
+        scored_posts.append((post, score))
+
+    # Rank posts
+    scored_posts.sort(key=lambda x: x[1], reverse=True)
+
+    # Diversity control: max 2 posts per author
+    max_posts_per_user = 2
+    author_count = defaultdict(int)
+    final_feed = []
+
+    for post, score in scored_posts:
+        if author_count[post.author_id] >= max_posts_per_user:
+            continue
+
+        final_feed.append(post)
+        author_count[post.author_id] += 1
+
+        if len(final_feed) == 20:  # limit feed to 20 posts
+            break
+
     context = {
-        'posts':posts
+        'posts': final_feed
     }
 
     return render(request, 'syntaxandstories/feed.html', context)
