@@ -5,8 +5,10 @@ from django.db import transaction
 from django.db.models import Count, Prefetch, F, Exists, OuterRef
 from django.utils import timezone
 from collections import defaultdict
+from django.views.decorators.http import require_POST
 from .models import Post, Comment, Like, SavedPosts
 from user.models import Follow
+from .forms import CommentForm
 
 # Create your views here.
 def home(request):
@@ -164,3 +166,30 @@ def save_post(request, post_id):
         })
 
             
+
+
+
+
+
+@login_required
+@require_POST
+def add_comment(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    form = CommentForm(request.POST)
+    
+    if form.is_valid():
+        comment = form.save(commit=False)
+        comment.post = post
+        comment.user = request.user
+        comment.save()
+
+        # Return JSON with comment info
+        return JsonResponse({
+            'success': True,
+            'username': request.user.username,
+            'content': comment.content,
+            'created_at': comment.created_at.strftime("%b %d, %Y %H:%M"),
+            'comment_id': comment.id
+        })
+    
+    return JsonResponse({'success': False, 'errors': form.errors})

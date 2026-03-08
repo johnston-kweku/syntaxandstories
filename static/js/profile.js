@@ -32,6 +32,8 @@ followBtn.forEach(btn => {
     })
 })
 
+
+
 document.addEventListener('DOMContentLoaded', () => {
     const tabs = document.querySelectorAll('.tab-button');
     const contents = document.querySelectorAll('.tab-content');
