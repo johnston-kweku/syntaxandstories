@@ -175,21 +175,23 @@ def save_post(request, post_id):
 @require_POST
 def add_comment(request, post_id):
     post = get_object_or_404(Post, id=post_id)
-    form = CommentForm(request.POST)
-    
-    if form.is_valid():
-        comment = form.save(commit=False)
-        comment.post = post
-        comment.user = request.user
-        comment.save()
+    if request.method == 'POST':
+        print("Hello") 
+        form = CommentForm(request.POST)
+        
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = post
+            comment.user = request.user
+            comment.save()
 
-        # Return JSON with comment info
-        return JsonResponse({
-            'success': True,
-            'username': request.user.username,
-            'content': comment.content,
-            'created_at': comment.created_at.strftime("%b %d, %Y %H:%M"),
-            'comment_id': comment.id
-        })
-    
-    return JsonResponse({'success': False, 'errors': form.errors})
+            # Return JSON with comment info
+            return JsonResponse({
+                'success': True,
+                'author':comment.author.id,
+                'username': request.user.username,
+                'content': comment.content,
+                'created_at': comment.created_at.strftime("%b %d, %Y %H:%M"),
+                'user_avatar':request.user.profile.profile_picture.url if request.user.profile.profile_picture else 'https://via.placeholder.com/40'
+            })
+        return JsonResponse({'success': False, 'errors': form.errors})

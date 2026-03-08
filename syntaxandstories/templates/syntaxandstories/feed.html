@@ -162,15 +162,59 @@
             </div>
         </div>
             
-        <div class="view-comments w-11/12 flex gap-2 pl-6 hover:text-violet-600 cursor-pointer">
+        <div onclick="toggleComments('{{ post.id }}')" class="view-comments w-11/12 flex gap-2 pl-6 hover:text-violet-600 cursor-pointer">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 hover:stroke-violet-600">
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48.432.447.74 1.04.586 1.641a4.483 4.483 0 0 1-.923 1.785A5.969 5.969 0 0 0 6 21c1.282 0 2.47-.402 3.445-1.087.81.22 1.668.337 2.555.337Z" />
             </svg>
-            <p class="mb-10">
-                View {{post.num_comments}} comments
+            <p id="toggle-text-{{ post.id }}" class="mb-10">
+                View {{post.num_comments}} {{ post.comments.count|pluralize:"comment,comments" }}
             </p>
         </div>
-        
+
+        <div class="border-t border-gray-100 pt-4">
+
+  <!-- Comments container (initially hidden) -->
+  <div id="comments-container-{{ post.id }}" class="space-y-4 max-h-100 overflow-y-auto hidden">
+
+    <!-- Add Comment -->
+     
+    <div class="flex gap-3">
+        <form data-post-id="{{post.id}}" method="post" id="comment-form" class="flex gap-3 w-full items-center justify-center">
+        <img src="{{ request.user.profile.profile_picture.url|default:'https://via.placeholder.com/40' }}" class="w-10 h-10 rounded-full">
+            {% csrf_token %}
+            <div class="flex-1 flex gap-2">
+                <input type="text" name="content" id="id_content" placeholder="Write a comment..."
+                class="flex-1 px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-violet-500"
+                id="comment-input-{{ post.id }}"
+                >
+                <button type="submit"  class=" active:scale-95 px-4 py-3 bg-linear-to-r from-violet-600 to-fuchsia-600 text-white rounded-xl">Send</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Comments List -->
+    <div id="comments-list-{{ post.id }}" class="space-y-3">
+        {% for comment in post.comments.all %}
+        <div class="flex gap-3">
+            <img src="{{ comment.author.profile.profile_picture.url|default:'https://via.placeholder.com/40' }}" class="w-10 h-10 rounded-full">
+            <div class="flex-1">
+                <div class="bg-gray-50 rounded-2xl px-4 py-3">
+                    <div class="flex items-center justify-between mb-1">
+                        <h4 class="font-semibold text-gray-800">{{ comment.author.username }}</h4>
+                        <button class="text-gray-400 hover:text-gray-600">•••</button>
+                    </div>
+                    <p class="text-gray-700 text-sm">{{ comment.content }}</p>
+                </div>
+                <div class="flex items-center gap-4 mt-2 text-sm text-gray-600">
+                    <span class="text-gray-400 text-xs">{{ comment.created_at }}</span>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+  </div>
+</div>
     </div>
 
 

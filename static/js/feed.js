@@ -156,3 +156,107 @@ saveBtn.forEach(btn => {
 })
 
 
+function fetchData() {
+
+        fetch(`/post/5/comment/`, {
+            method: 'POST',
+            headers: {
+                "X-CSRFToken": getCookie("csrftoken"),
+                "Content-Type": "application/json"
+            }
+        })
+
+}
+fetchData()
+
+
+
+// document.querySelectorAll('#comment-form').forEach(form => {
+//     form.addEventListener('submit', function(e) {
+//         e.preventDefault(); 
+
+//         const postId =  this.dataset.postId
+
+//         console.log(postId)
+//         fetch(`/post/${postId}/comment/`, {
+//         method: 'POST',
+//         headers: {
+//             "X-CSRFToken": getCookie("csrftoken"),
+//             "Content-Type": "application/json"
+//         } 
+
+//     })
+//     .then(response => response.json())
+//     .then(data => {
+//         if (data.success) {
+//         const commentsList = document.getElementById(`comments-list-${postId}`);
+//         const newComment = document.createElement('div');
+//         newComment.className = 'flex gap-3';
+//         newComment.innerHTML = `
+//             <img src="${data.user_avatar}" class="w-10 h-10 rounded-full">
+//             <div class="flex-1">
+//                 <div class="bg-gray-50 rounded-2xl px-4 py-3">
+//                     <div class="flex items-center justify-between mb-1">
+//                         <h4 class="font-semibold text-gray-800">${data.username}</h4>
+//                         <button class="text-gray-400 hover:text-gray-600">•••</button>
+//                     </div>
+//                     <p class="text-gray-700 text-sm">${data.content}</p>
+//                 </div>
+//                 <div class="flex items-center gap-4 mt-2 text-sm text-gray-600">
+//                     <button onclick="toggleLike(${data.comment_id})" class="hover:text-red-500 flex items-center gap-1">❤️ <span>0</span></button>
+//                     <span class="text-gray-400 text-xs">Just now</span>
+//                 </div>
+//             </div>
+//         `;
+//         commentsList.prepend(newComment);
+//         input.value = '';
+//     }
+//     })
+
+
+//     });
+// });
+
+function toggleComments(postId) {
+    const container = document.getElementById(`comments-container-${postId}`);
+    const toggleText = document.getElementById(`toggle-text-${postId}`);
+    container.classList.toggle('hidden');
+    toggleText.innerText = container.classList.contains('hidden') ? `View Comments` : `Hide Comments`;
+}
+
+// async function addComment(postId) {
+//     const form = document.getElementById(`comment-form-${postId}`)
+//     const input = document.getElementById(`comment-input-${postId}`);
+//     const content = input.value.trim();
+//     if (!content) return;
+//     const formData = new FormData(form)
+//     const response = await fetch(`/post/${postId}/comment/`, {
+//         method: 'POST',
+//         body: formData
+//     });
+
+//     const data = await response.json();
+//     if (data.success) {
+//         const commentsList = document.getElementById(`comments-list-${postId}`);
+//         const newComment = document.createElement('div');
+//         newComment.className = 'flex gap-3';
+//         newComment.innerHTML = `
+//             <img src="${data.user_avatar}" class="w-10 h-10 rounded-full">
+//             <div class="flex-1">
+//                 <div class="bg-gray-50 rounded-2xl px-4 py-3">
+//                     <div class="flex items-center justify-between mb-1">
+//                         <h4 class="font-semibold text-gray-800">${data.username}</h4>
+//                         <button class="text-gray-400 hover:text-gray-600">•••</button>
+//                     </div>
+//                     <p class="text-gray-700 text-sm">${data.content}</p>
+//                 </div>
+//                 <div class="flex items-center gap-4 mt-2 text-sm text-gray-600">
+//                     <button onclick="toggleLike(${data.comment_id})" class="hover:text-red-500 flex items-center gap-1">❤️ <span>0</span></button>
+//                     <span class="text-gray-400 text-xs">Just now</span>
+//                 </div>
+//             </div>
+//         `;
+//         commentsList.prepend(newComment);
+//         input.value = '';
+//     }
+// }
