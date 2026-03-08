@@ -58,6 +58,11 @@ def profile_view(request, username):
         )
         .order_by("-created_at")
         )
+    
+    liked_posts = Post.objects.filter(likes__user=user).distinct()
+    saved_posts = Post.objects.filter(saved_by__user=user).distinct().order_by('-created_at')
+
+
     followers_count = user.followers.count
     following_count = user.following.count
     
@@ -77,7 +82,9 @@ def profile_view(request, username):
         'followers_count':followers_count,
         'following_count':following_count,
         'total_likes':total_likes,
-        'is_following':is_following
+        'is_following':is_following,
+        'liked_posts':liked_posts,
+        'saved_posts':saved_posts,
     }
     return render(request, 'user/profile.html', context)
 
