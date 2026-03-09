@@ -195,68 +195,60 @@ function toggleComments(postId) {
 }
 
 
-const options = document.querySelectorAll('.options-btn')
-options.forEach(btn => {
-    btn.addEventListener("click", function() {
-        const existingMenu = btn.parentElement.querySelector(".options-menu");
-        if(existingMenu) {
-            existingMenu.remove();
-            return;
-        }
+document.addEventListener("click", function(e){
 
-        // container div
+    const btn = e.target.closest(".options-btn");
 
-        const container = document.createElement("div")
-        container.className = "options-menu absolute bg-white shadow-lg rounded-md p-2"
-        container.style.zIndex = 1000;
+    if(!btn) return;
 
+    const existingMenu = btn.parentElement.querySelector(".options-menu");
+    if(existingMenu){
+        existingMenu.remove();
+        return;
+    }
 
-        // option text
-        const optionText = document.createElement("p")
-        optionText.textContent = "Delete Comment";
-        optionText.className = "cursor-pointer hover:text-red-600 font-bold text-shadow-red-800"
+    const container = document.createElement("div");
+    container.className = "options-menu absolute bg-white shadow-lg rounded-md p-2";
+    container.style.zIndex = 1000;
 
-        optionText.addEventListener("click", () => {
-            const commentId = btn.dataset.commentId
-            fetch(`/comment/${commentId}/delete/`, {
-                method:'POST',
-                headers:{
-                    'X-CSRFToken': getCookie("csrftoken"),
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(res => res.json())
-            .then(data => {
-                if(data.success){
+    const optionText = document.createElement("p");
+    optionText.textContent = "Delete Comment";
+    optionText.className = "cursor-pointer hover:text-red-600 font-bold";
 
-            const comment = document.getElementById(`comment-${commentId}`);
+    optionText.addEventListener("click", () => {
 
-            // animation
-            comment.style.opacity = "0";
-            comment.style.transform = "translateX(-20px)";
+        const commentId = btn.dataset.commentId;
 
-            // remove after animation
-            setTimeout(() => {
-                comment.remove();
-            }, 300);
-        }
-            })
-            container.remove()
+        fetch(`/comment/${commentId}/delete/`,{
+            method:"POST",
+            headers:{
+                "X-CSRFToken": getCookie("csrftoken"),
+                "Content-Type":"application/json"
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+
+            if(data.success){
+
+                const comment = document.getElementById(`comment-${commentId}`);
+
+                comment.style.opacity = "0";
+                comment.style.transform = "translateX(-20px)";
+
+                setTimeout(()=>{
+                    comment.remove();
+                },300);
+
+            }
+
         });
 
-        // Append option to container
-        container.appendChild(optionText)
+        container.remove();
+    });
 
-        // Append container to button's parent
-        btn.parentElement.appendChild(container)
+    container.appendChild(optionText);
 
-        // Close menu if clicked outside
-        document.addEventListener("click", function closeMenu(e) {
-            if(!container.contains(e.target) && e.target !== btn) {
-                container.remove();
-                this.documentElement.removeEventListener("click", closeMenu);
-            }
-        } )
+    btn.parentElement.appendChild(container);
 
-    })
-})
+});

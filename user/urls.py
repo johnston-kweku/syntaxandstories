@@ -7,5 +7,6 @@ urlpatterns = [
     path('login/', views.login_view, name='login'),
     path('profile/<str:username>/', views.profile_view, name='profile'),
     path('profile/edit/<str:username>/', views.edit_profile_view, name='edit_profile'),
-    path('follow/<str:username>/', views.toggle_follow, name='follow')
+    path('follow/<str:username>/', views.toggle_follow, name='follow'),
+    path('settings', views.settings_view, name='settings'),
 ]

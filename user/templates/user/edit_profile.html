@@ -9,12 +9,12 @@
   <div class="max-w-4xl mx-auto px-4">
     <!-- Header -->
     <div class="flex items-center gap-4 mb-6">
-      <a
+      <button onclick="history.go(-1)"
         href="{% url 'user:profile' request.user.username %}"
         class="p-2 hover:bg-white rounded-xl transition"
       >
         ←
-      </a>
+      </button>
 
       <div>
         <h1 class="text-3xl font-bold text-gray-800">Edit Profile</h1>

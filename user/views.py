@@ -148,3 +148,5 @@ def toggle_follow(request, username):
         })
 
     
+def settings_view(request):
+    return render(request, 'user/settings.html')
