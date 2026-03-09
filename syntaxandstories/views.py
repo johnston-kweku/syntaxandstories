@@ -174,24 +174,23 @@ def save_post(request, post_id):
 @login_required
 @require_POST
 def add_comment(request, post_id):
-    post = get_object_or_404(Post, id=post_id)
     if request.method == 'POST':
-        print("Hello") 
-        form = CommentForm(request.POST)
-        
-        if form.is_valid():
-            comment = form.save(commit=False)
-            comment.post = post
-            comment.user = request.user
-            comment.save()
+        post = Post.objects.get(id=post_id)
+        content = request.POST.get('content')
+        comment = Comment.objects.create(
+            post=post,
+            author=request.user,
+            content=content
+         )
 
-            # Return JSON with comment info
-            return JsonResponse({
-                'success': True,
-                'author':comment.author.id,
-                'username': request.user.username,
-                'content': comment.content,
-                'created_at': comment.created_at.strftime("%b %d, %Y %H:%M"),
-                'user_avatar':request.user.profile.profile_picture.url if request.user.profile.profile_picture else 'https://via.placeholder.com/40'
-            })
-        return JsonResponse({'success': False, 'errors': form.errors})
+        # Return JSON with comment info
+        return JsonResponse({
+            'success': True,
+            'author':comment.author.id,
+            'username': request.user.profile.profile_name if request.user.profile.profile_name else request.user.username,
+            'content': comment.content,
+            'created_at': comment.created_at.strftime("%b %d, %Y %H:%M"),
+            'user_avatar':request.user.profile.profile_picture.url if request.user.profile.profile_picture else 'https://via.placeholder.com/40',
+            'comment_count': post.comments.count()
+        })
+
