@@ -8,6 +8,7 @@ urlpatterns = [
     path('feed/', views.feed, name='feed'),
     path('like/<int:post_id>/', views.toggle_like, name='like'),
     path('save/<int:post_id>/', views.save_post, name='save_post'),
-    path('post/<int:post_id>/comment/', views.add_comment, name='add_comment')
+    path('post/<int:post_id>/comment/', views.add_comment, name='add_comment'),
+    path('comment/<int:comment_id>/delete/', views.delete_comment, name='delete_comment'),
     
 ]

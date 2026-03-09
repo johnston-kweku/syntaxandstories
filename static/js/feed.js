@@ -215,8 +215,32 @@ options.forEach(btn => {
         const optionText = document.createElement("p")
         optionText.textContent = "Delete Comment";
         optionText.className = "cursor-pointer hover:text-red-600 font-bold text-shadow-red-800"
-        optionText.addEventListener("click", () => {
 
+        optionText.addEventListener("click", () => {
+            const commentId = btn.dataset.commentId
+            fetch(`/comment/${commentId}/delete/`, {
+                method:'POST',
+                headers:{
+                    'X-CSRFToken': getCookie("csrftoken"),
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if(data.success){
+
+            const comment = document.getElementById(`comment-${commentId}`);
+
+            // animation
+            comment.style.opacity = "0";
+            comment.style.transform = "translateX(-20px)";
+
+            // remove after animation
+            setTimeout(() => {
+                comment.remove();
+            }, 300);
+        }
+            })
             container.remove()
         });
 

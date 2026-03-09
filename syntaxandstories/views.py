@@ -194,3 +194,24 @@ def add_comment(request, post_id):
             'comment_count': post.comments.count()
         })
 
+@login_required
+def delete_comment(request, comment_id):
+    if request.method == 'POST':
+        comment = get_object_or_404(Comment, id=comment_id)
+
+        if comment.author != request.user:
+            return JsonResponse({
+                'success':False,
+                'error':'Permission denied'
+            }, status=403)
+        
+        comment.delete()
+
+        return JsonResponse({
+            'success':True
+        })
+    
+    return JsonResponse({
+        'success':False,
+        'error':'Invalid request method'
+    })
