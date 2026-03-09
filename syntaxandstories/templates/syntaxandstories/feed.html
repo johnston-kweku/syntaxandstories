@@ -3,9 +3,71 @@
 
 {% block content %}
 
-{% for post in posts %}
+<div class="w-full flex flex-col sm:flex-row justify-center sm:justify-start gap-6">
+    <div class="hidden sm:flex flex-col bg-white/40 backdrop-blur-md shadow-2xl rounded-2xl p-6 w-11/12 mx-8 sticky top-7 h-fit items-center">
+    <!-- Profile Picture -->
+    <a href="{% url 'user:profile' request.user.username %}">
+    {% if request.user.profile.profile_picture %}
+    <img src="{{ request.user.profile.profile_picture.url }}" 
+         class="w-28 h-28 rounded-full border-4 border-gray-300 hover:border-violet-600 transition-all duration-300">
+    {% else %}
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" 
+         stroke-width="1.5" stroke="currentColor" 
+         class="w-28 h-28 rounded-full border-4 border-gray-300 hover:border-violet-600 transition-all duration-300">
+        <path stroke-linecap="round" stroke-linejoin="round" 
+              d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+    </svg>
+    {% endif %}
+    </a>
 
-    <div class="bg-white shadow-lg hover:shadow-2xl rounded-t-2xl rounded-b-2xl w-11/12 sm:w-8/12 mx-auto mb-10">
+    <!-- Name -->
+    <h2 class="mt-4 text-xl font-bold text-gray-800 text-center">
+        {% if request.user.profile.profile_name %}
+        {{ request.user.profile.profile_name }}
+        {% else %}
+        {{ request.user.username }}
+        {% endif %}
+    </h2>
+
+    <!-- Skills / Bio -->
+    {% if request.user.profile.skills %}
+    <p class="mt-1 text-sm text-gray-500 text-center line-clamp-3">
+        {{ request.user.profile.skills }}
+    </p>
+    {% endif %}
+
+    <!-- Follower / Following Stats -->
+    <div class="mt-4 flex justify-around w-full text-center">
+        <div>
+            <p class="font-bold text-gray-800">{{ request.user.followers.count }}</p>
+            <p class="text-xs text-gray-500">Followers</p>
+        </div>
+        
+        <div>
+            <p class="font-bold text-gray-800">{{ request.user.following.count }}</p>
+            <p class="text-xs text-gray-500">Following</p>
+        </div>
+    </div>
+
+    <!-- Action Button -->
+    <a href="{% url 'user:edit_profile' request.user.username %}" class="mt-6 px-4 py-2 bg-linear-to-r from-violet-600 to-fuchsia-600 text-white rounded-xl font-semibold hover:scale-105 transition-transform duration-300">
+        Edit Profile
+    </a>
+
+    <!-- Optional: Quick Links or Shortcuts -->
+    <div class="mt-6 flex justify-between gap-2 w-full">
+        <a href="{% url 'user:profile' request.user.username %}" 
+           class="text-purple-700 hover:underline text-sm">My Posts</a>
+        <a href="" 
+           class="text-purple-700 hover:underline text-sm">Saved Posts</a>
+        <a href="" 
+           class="text-purple-700 hover:underline text-sm">Settings</a>
+    </div>
+</div>
+
+<div class="flex flex-col items-center sm:items-start w-full sm:w-auto">
+{% for post in posts %}
+    <div class="bg-white shadow-lg hover:shadow-2xl rounded-t-2xl rounded-b-2xl w-11/12 sm:w-8/12 mb-10">
         <!-- Post media -->
         {% if post.media and post.is_video %}
             <div class="w-full rounded-t-2xl overflow-hidden">
@@ -110,7 +172,7 @@
                         Expand
                     </p>
                 </div>
-                <p data-post-content="{{post.content}}" class="post-content text-slate-700 text-sm text-wrap line-clamp-3 mb-5">
+                <p data-post-content="{{post.content}}" class="post-content text-gray-600 text-sm text-wrap line-clamp-3 mb-5">
                     {{post.content}}
                 </p>
 
@@ -180,7 +242,7 @@
      
     <div class="flex gap-0.5 items-center justify-center w-11/12  mx-auto ">
         <img src="{{ request.user.profile.profile_picture.url|default:'https://via.placeholder.com/40' }}" class="w-10 h-10 rounded-full">
-        <form data-post-id="{{post.id}}" method="post" class="comment-form  flex gap-2 sm:w-full  items-center justify-center">
+        <form data-post-id="{{post.id}}" method="post" class="comment-form  flex gap-2 w-full  items-center justify-center">
             {% csrf_token %}
             <div class="flex-1 flex gap-2">
                 <input type="text" name="content" placeholder="Write a comment..."
@@ -223,6 +285,8 @@
 
 
 {% endfor %}
+</div>
+</div>
 
 
 

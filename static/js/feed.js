@@ -198,8 +198,41 @@ function toggleComments(postId) {
 const options = document.querySelectorAll('.options-btn')
 options.forEach(btn => {
     btn.addEventListener("click", function() {
-        let container = btn.createElement("div")
-        let optionText = container.appendChild("p")
-        optionText.textContent = 'Delete Comment'
+        const existingMenu = btn.parentElement.querySelector(".options-menu");
+        if(existingMenu) {
+            existingMenu.remove();
+            return;
+        }
+
+        // container div
+
+        const container = document.createElement("div")
+        container.className = "options-menu absolute bg-white shadow-lg rounded-md p-2"
+        container.style.zIndex = 1000;
+
+
+        // option text
+        const optionText = document.createElement("p")
+        optionText.textContent = "Delete Comment";
+        optionText.className = "cursor-pointer hover:text-red-600 font-bold text-shadow-red-800"
+        optionText.addEventListener("click", () => {
+
+            container.remove()
+        });
+
+        // Append option to container
+        container.appendChild(optionText)
+
+        // Append container to button's parent
+        btn.parentElement.appendChild(container)
+
+        // Close menu if clicked outside
+        document.addEventListener("click", function closeMenu(e) {
+            if(!container.contains(e.target) && e.target !== btn) {
+                container.remove();
+                this.documentElement.removeEventListener("click", closeMenu);
+            }
+        } )
+
     })
 })

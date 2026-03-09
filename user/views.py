@@ -88,7 +88,6 @@ def profile_view(request, username):
     }
     return render(request, 'user/profile.html', context)
 
-
 @login_required
 def edit_profile_view(request, username):
     profile_user = get_object_or_404(User, username=username)
