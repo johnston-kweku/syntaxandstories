@@ -215,11 +215,13 @@
 
                 <div class="flex items-center border justify-between w-full gap-3">
                     <div class="flex items-center gap-3">
-                        {% if post.author.profile.profile_picture %}
-                            <img src="{{post.author.profile.profile_picture.url}}" 
-                            class="w-10 h-10 rounded-full object-cover">
+                        {% if user.profile.profile_picture %}
+                        <img src="{{user_profile.profile_picture.url}}" class="w-36 h-32 rounded-2xl border-4 border-white shadow-xl" style="background-size: cover;
+                            background-attachment: fixed;">
                         {% else %}
-                            <div class="w-10 h-10 rounded-full bg-gray-200"></div>
+                        <svg class="w-12 h-12 rounded-full border-2 border-violet-100" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                        </svg>
                         {% endif %}
 
                         <div>
@@ -239,13 +241,32 @@
                     </div>
 
                 </div>
-
+                
             </div>
+            <div  class=" items-center  pl-4 py-4">
+                <button data-post-author="{{post.author.username}}" class="follow-btn cursor-pointer text-sm font-bold flex gap-1  {% if post.author_is_followed %} text-red-500 {% else %} text-purple-700 {% endif%} ">
+                <svg  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="follow-svg w-5 stroke-purple-700 {% if post.author_is_followed %} stroke-red-500 {% else %} stroke-purple-700 {% endif %}">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z" />
+                </svg>
+                    <p class="follow-text">
+                        {% if post.author_is_followed %}
+                            Unfollow
+                        {% else %}
+                            Follow
+                        {% endif %}
+                    </p>
+                </button>
+        </div>
 
             <!-- Post Content -->
             <div class="px-4 pb-4">
+                {% if post.title %}
+                <p class="font-bold text-2xl">
+                    {{ post.title|upper}}
+                </p>
+                {% endif %}
 
-                <p class="text-gray-800 leading-relaxed mb-4">
+                <p class="text-gray-800 line-clamp-3 leading-relaxed mb-4">
                     {{post.content|default:""}}
                 </p>
 
@@ -285,9 +306,9 @@
 
     {% endfor %}
 
-</div>
-        
     </div>
+        
+</div>
         
 
 <script src="{% static 'js/profile.js' %}"></script>

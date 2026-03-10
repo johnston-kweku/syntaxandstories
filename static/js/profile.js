@@ -34,17 +34,3 @@ followBtn.forEach(btn => {
 
 
 
-document.addEventListener('DOMContentLoaded', () => {
-    const tabs = document.querySelectorAll('.tab-button');
-    const contents = document.querySelectorAll('.tab-content');
-
-    tabs.forEach((tab, index) => {
-        tab.addEventListener('click', () => {
-            contents.forEach(c => c.classList.add('hidden'));
-            contents[index].classList.remove('hidden');
-
-            tabs.forEach(t => t.classList.remove('bg-purple-100', 'text-purple-700'));
-            tab.classList.add('bg-purple-100', 'text-purple-700');
-        });
-    });
-});
