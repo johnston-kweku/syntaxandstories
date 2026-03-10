@@ -161,3 +161,9 @@ document.querySelectorAll(".picture").forEach(image => {
         image.requestFullscreen()
     })
 })
+
+document.querySelectorAll(".post-media").forEach((img) => {
+  img.addEventListener("click", () => {
+    img.requestFullscreen();
+  });
+});
