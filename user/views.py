@@ -59,7 +59,7 @@ def profile_view(request, username):
         .order_by("-created_at")
         )
     
-    liked_posts = Post.objects.filter(likes__user=user).distinct()
+    liked_posts = Post.objects.filter(likes__user=user).distinct().exclude(author=user)
     saved_posts = Post.objects.filter(saved_by__user=user).distinct().order_by('-created_at')
 
 

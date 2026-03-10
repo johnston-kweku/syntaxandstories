@@ -167,3 +167,32 @@ document.querySelectorAll(".post-media").forEach((img) => {
     img.requestFullscreen();
   });
 });
+
+const postsTab = document.getElementById("posts-tab")
+const likedTab = document.getElementById("liked-tab")
+const savedTab = document.getElementById("saved-tab")
+
+const postsSection = document.getElementById("posts-section")
+const likedSection = document.getElementById("liked-section")
+const savedSection = document.getElementById("saved-section")
+
+function hideAll(){
+    postsSection.classList.add("hidden")
+    likedSection.classList.add("hidden")
+    savedSection.classList.add("hidden")
+}
+
+postsTab.addEventListener("click", () => {
+    hideAll()
+    postsSection.classList.remove("hidden")
+})
+
+likedTab.addEventListener("click", () => {
+    hideAll()
+    likedSection.classList.remove("hidden")
+})
+
+savedTab.addEventListener("click", () => {
+    hideAll()
+    savedSection.classList.remove("hidden")
+})
