@@ -243,14 +243,7 @@
             </div>
         </div>
             
-        <div onclick="toggleComments('{{ post.id }}')" class="view-comments w-11/12 flex gap-2 pl-6 hover:text-violet-600 cursor-pointer">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 hover:stroke-violet-600">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48.432.447.74 1.04.586 1.641a4.483 4.483 0 0 1-.923 1.785A5.969 5.969 0 0 0 6 21c1.282 0 2.47-.402 3.445-1.087.81.22 1.668.337 2.555.337Z" />
-            </svg>
-            <p id="toggle-text-{{ post.id }}" class="mb-10">
-                View <span class="comments-count" data-post-id="{{post.id}}">{{post.num_comments}}</span> {{ post.comments.count|pluralize:"comment,comments" }}
-            </p>
-        </div>
+        
 
         <div class="border-t border-gray-100 pt-4">
 
@@ -293,10 +286,14 @@
                     <p class="text-gray-700 text-sm">{{ comment.content }}</p>
                 </div>
                 <div class="flex items-center gap-4 mt-2 text-sm text-gray-600">
-                    <span class="text-gray-400 text-xs">{{ comment.created_at }}</span>
+                    <span class="text-gray-400 text-xs">{{ comment.created_at|timesince }}</span>
                 </div>
             </div>
         </div>
+        {% empty %}
+        <p class="font-bold px-6 bg-linear-to-r from-violet-600 to-fuchsia-600 bg-clip-text text-transparent p-3 rounded-2xl">
+            Be the first to comment
+        </p>
         {% endfor %}
     </div>
 
