@@ -31,7 +31,7 @@
 
     <!-- Skills / Bio -->
     {% if request.user.profile.skills %}
-    <p class="mt-1 text-sm text-gray-500 text-center line-clamp-3">
+    <p class="mt-1 text-sm text-gray-500 font-bold text-center line-clamp-3">
         {{ request.user.profile.skills }}
     </p>
     {% endif %}
@@ -126,7 +126,7 @@
                         {{post.author.profile.profile_name}}
                     </p>
                     {% if post.author.profile.skills %}
-                    <p class="text-sm text-gray-500">
+                    <p class="text-sm font-bold text-gray-500">
                         {{post.author.profile.skills}}
                     </p>
                     {% endif %}
@@ -134,11 +134,7 @@
                     <p class="font-bold text-center text-lg mt-2">
                         {{post.author.username}}
                     </p>
-                    {% if post.author.profile.skills %}
-                    <p>
-                        {{post.author.profile.skills}}
-                    </p>
-                    {% endif %}
+                    
                     {% endif%}
                 </div>
             </div>
@@ -253,7 +249,13 @@
     <!-- Add Comment -->
      
     <div class="flex gap-0.5 items-center justify-center w-11/12  mx-auto ">
-        <img src="{{ request.user.profile.profile_picture.url|default:'https://via.placeholder.com/40' }}" class="w-10 h-10 rounded-full">
+        {% if request.user.profile.profile_picture %}
+        <img src="{{ request.user.profile.profile_picture.url }}" class="w-10 h-10 rounded-full">
+        {% else %}
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12 rounded-full border-2 border-violet-100">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+        </svg>
+        {% endif %}
         <form data-post-id="{{post.id}}" method="post" class="comment-form  flex gap-2 w-full  items-center justify-center">
             {% csrf_token %}
             <div class="flex-1 flex gap-2">

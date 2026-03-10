@@ -3,11 +3,11 @@ from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from django.db.models import Sum, Count
+from django.db.models import Sum, Count, Prefetch
 from django.db import transaction
 from .forms import UserCreationForm, ProfileForm
 from .models import UserProfile, Follow
-from syntaxandstories.models import Post
+from syntaxandstories.models import Post, SavedPosts, Like
 
 # Create your views here.
 
@@ -62,6 +62,17 @@ def profile_view(request, username):
     liked_posts = Post.objects.filter(likes__user=user).distinct().exclude(author=user)
     saved_posts = Post.objects.filter(saved_by__user=user).distinct().order_by('-created_at')
 
+    user_saves_prefetch = Prefetch(
+        "saved_by",
+        queryset=SavedPosts.objects.filter(user=request.user),
+        to_attr="user_saved"
+    )
+
+    user_likes_prefetch = Prefetch(
+        'likes',
+        queryset=Like.objects.filter(user=request.user),
+        to_attr='user_liked'
+    )
 
     followers_count = user.followers.count()
     following_count = user.following.count()
@@ -86,6 +97,8 @@ def profile_view(request, username):
         'posts':posts,
         'liked_posts':liked_posts,
         'saved_posts':saved_posts,
+        'user_liked':user_likes_prefetch,
+        'user_saved':user_saves_prefetch,
     }
     return render(request, 'user/profile.html', context)
 

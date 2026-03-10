@@ -168,6 +168,75 @@ document.querySelectorAll(".post-media").forEach((img) => {
   });
 });
 
+
+const saveBtn = document.querySelectorAll(".save-btn");
+
+saveBtn.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const postIdSave = btn.dataset.postIdSave;
+    btn.disabled = true;
+    fetch(`/save/${postIdSave}/`, {
+      method: "POST",
+      headers: {
+        "X-CSRFToken": getCookie("csrftoken"),
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        const countSpan = btn.parentElement.querySelector(".save-count");
+        countSpan.textContent = data.saves_count;
+
+        if (data.saved) {
+          btn.classList.add("fill-purple-600");
+        } else {
+          btn.classList.remove("fill-purple-600");
+        }
+      })
+      .finally(() => {
+        btn.disabled = false;
+      });
+  });
+});
+
+
+
+  const likeButtons = document.querySelectorAll(".like-btn");
+
+  likeButtons.forEach((button) => {
+    button.addEventListener("click", function () {
+      const postId = this.dataset.postId;
+
+      fetch(`/like/${postId}/`, {
+        method: "POST",
+        headers: {
+          "X-CSRFToken": getCookie("csrftoken"),
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          const countSpan = this.parentElement.querySelector(".likes-count");
+
+          countSpan.textContent = data.likes_count;
+
+          if (data.liked) {
+            this.classList.add("fill-red-600");
+          } else {
+            this.classList.remove("fill-red-600");
+          }
+        });
+    });
+  });
+
+
+
+
+
+
+
+
+
 const postsTab = document.getElementById("posts-tab")
 const likedTab = document.getElementById("liked-tab")
 const savedTab = document.getElementById("saved-tab")
@@ -185,6 +254,7 @@ function hideAll(){
 postsTab.addEventListener("click", () => {
     hideAll()
     postsSection.classList.remove("hidden")
+    postsTab.classList.add("border-b-2 border-violet-500")
 })
 
 likedTab.addEventListener("click", () => {
