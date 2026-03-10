@@ -14,11 +14,14 @@ document.querySelectorAll(".post-media").forEach((img) => {
   });
 });
 
+
+// Hashtag filter
+
 document.querySelectorAll(".post-content").forEach((content) => {
   const postContent = content.dataset.postContent;
   const hashContainer = content.closest("div").querySelector(".hash-container"); // target the container in the same post
   const words = postContent.split(/\s+/); // split by any whitespace
-
+  
   words.forEach((word) => {
     if (word.startsWith("#")) {
       const tagElement = document.createElement("p");
@@ -30,6 +33,11 @@ document.querySelectorAll(".post-content").forEach((content) => {
     }
   });
 });
+
+
+
+
+// follow
 
 const followBtn = document.querySelectorAll(".follow-btn");
 

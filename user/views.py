@@ -63,8 +63,8 @@ def profile_view(request, username):
     saved_posts = Post.objects.filter(saved_by__user=user).distinct().order_by('-created_at')
 
 
-    followers_count = user.followers.count
-    following_count = user.following.count
+    followers_count = user.followers.count()
+    following_count = user.following.count()
     
     total_likes = posts.aggregate(
         total=Sum('likes_count')
@@ -73,8 +73,8 @@ def profile_view(request, username):
     is_following = Follow.objects.filter(
         follower=request.user,
         following=user
-    )
-
+    ).exists()
+    
     context = {
         'user':user,
         'user_profile':user.profile,
@@ -83,6 +83,7 @@ def profile_view(request, username):
         'following_count':following_count,
         'total_likes':total_likes,
         'is_following':is_following,
+        'posts':posts,
         'liked_posts':liked_posts,
         'saved_posts':saved_posts,
     }
