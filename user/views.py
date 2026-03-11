@@ -3,9 +3,10 @@ from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
+from django.views.decorators.http import require_POST
 from django.db.models import Sum, Count, Prefetch
 from django.db import transaction
-from .forms import UserCreationForm, ProfileForm
+from .forms import UserCreationForm, ProfileForm, ChangeEmailForm
 from .models import UserProfile, Follow
 from syntaxandstories.models import Post, SavedPosts, Like
 
@@ -163,9 +164,32 @@ def toggle_follow(request, username):
             'is_following':is_following
         })
 
-    
+@login_required 
 def settings_view(request):
     return render(request, 'user/settings.html')
 
 def privacy_and_terms(request):
     return render(request, 'user/privacy.html')
+
+@login_required
+@require_POST
+def change_email(request):
+    user = request.user
+    form = ChangeEmailForm(request.POST, instance=user)
+
+    if form.is_valid():
+        form.save()
+
+        return JsonResponse({
+            'success':True,
+            'message':'Email updated successfully',
+            'new_email':user.email
+        })
+    
+    else:
+        errors = {field: error.get_json_data() for field, error in form.errors.items()}
+
+        return JsonResponse({
+            'success':False,
+            'errors':errors
+        })

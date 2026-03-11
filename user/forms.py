@@ -55,3 +55,40 @@ class ProfileForm(forms.ModelForm):
         fields = [
             'profile_name', 'profile_picture', 'bio', 'location', 'link', 'skills'
         ]
+
+from django import forms
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
+class ChangeEmailForm(forms.ModelForm):
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={
+            "class": "w-full border rounded-xl px-4 py-2 focus:ring-2 focus:ring-violet-500 outline-none",
+            "placeholder": "Enter your current password"
+        })
+    )
+
+    class Meta:
+        model = User
+        fields = ['email']
+        widgets = {
+            "email": forms.EmailInput(attrs={
+                "class": "w-full border rounded-xl px-4 py-2 focus:ring-2 focus:ring-violet-500 outline-none",
+                "placeholder": "Enter new email"
+            })
+        }
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if User.objects.filter(email=email).exclude(pk=self.instance.pk).exists():
+            raise forms.ValidationError("Email already exists")
+        return email
+
+    def clean_password(self):
+        password = self.cleaned_data.get('password')
+        user = self.instance
+
+        if not user.check_password(password):
+            raise forms.ValidationError("Incorrect password")
+        return password
