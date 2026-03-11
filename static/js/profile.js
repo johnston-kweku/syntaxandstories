@@ -74,14 +74,18 @@ document.querySelectorAll(".comment-form").forEach((form) => {
         </div>
     `;
 
-          commentsList.prepend(newComment);
+          if (commentsList) {
+            commentsList.prepend(newComment);
+          } else {
+            console.warn('commentsList not found for', postId)
+          }
 
           const counters = document.querySelectorAll(
             `.comments-count[data-post-id="${postId}"]`,
           );
 
           counters.forEach((counter) => {
-            counter.textContent = data.comment_count;
+            if (counter) counter.textContent = data.comment_count;
           });
         }
       });
@@ -183,9 +187,9 @@ saveBtn.forEach((btn) => {
       },
     })
       .then((res) => res.json())
-      .then((data) => {
+        .then((data) => {
         const countSpan = btn.parentElement.querySelector(".save-count");
-        countSpan.textContent = data.saves_count;
+        if (countSpan) countSpan.textContent = data.saves_count;
 
         if (data.saved) {
           btn.classList.add("fill-purple-600");
@@ -217,8 +221,7 @@ saveBtn.forEach((btn) => {
         .then((response) => response.json())
         .then((data) => {
           const countSpan = this.parentElement.querySelector(".likes-count");
-
-          countSpan.textContent = data.likes_count;
+          if (countSpan) countSpan.textContent = data.likes_count;
 
           if (data.liked) {
             this.classList.add("fill-red-600");
@@ -246,23 +249,52 @@ const likedSection = document.getElementById("liked-section")
 const savedSection = document.getElementById("saved-section")
 
 function hideAll(){
-    postsSection.classList.add("hidden")
-    likedSection.classList.add("hidden")
-    savedSection.classList.add("hidden")
+  if (postsSection) postsSection.classList.add("hidden")
+  if (likedSection) likedSection.classList.add("hidden")
+  if (savedSection) savedSection.classList.add("hidden")
 }
 
-postsTab.addEventListener("click", () => {
-    hideAll()
-    postsSection.classList.remove("hidden")
-    postsTab.classList.add("border-b-2 border-violet-500")
-})
+function setActiveTab(activeTab){
+  [postsTab, likedTab, savedTab].forEach(t => {
+    if(!t) return;
+    t.classList.remove("border-b-2","border-violet-500")
+    t.setAttribute('aria-selected','false')
+  })
+  if(activeTab){
+    activeTab.classList.add("border-b-2","border-violet-500")
+    activeTab.setAttribute('aria-selected','true')
+  }
+}
 
-likedTab.addEventListener("click", () => {
+if (postsTab) {
+  postsTab.addEventListener("click", () => {
     hideAll()
-    likedSection.classList.remove("hidden")
-})
+    if (postsSection) postsSection.classList.remove("hidden")
+    setActiveTab(postsTab)
+  })
+}
 
-savedTab.addEventListener("click", () => {
+if (likedTab) {
+  likedTab.addEventListener("click", () => {
     hideAll()
-    savedSection.classList.remove("hidden")
-})
+    if (likedSection) likedSection.classList.remove("hidden")
+    setActiveTab(likedTab)
+  })
+}
+
+if (savedTab) {
+  savedTab.addEventListener("click", () => {
+    hideAll()
+    if (savedSection) savedSection.classList.remove("hidden")
+    setActiveTab(savedTab)
+  })
+}
+
+// Initialize default active tab
+if (!postsSection?.classList.contains('hidden')) {
+  setActiveTab(postsTab)
+} else if (!likedSection?.classList.contains('hidden')) {
+  setActiveTab(likedTab)
+} else if (!savedSection?.classList.contains('hidden')) {
+  setActiveTab(savedTab)
+}

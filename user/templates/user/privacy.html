@@ -1,0 +1,534 @@
+{% extends "syntaxandstories/base.html" %}
+
+{% load static %}
+
+{% block title %}Syntax and Stories - Legal & Policies{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-linear-to-br from-violet-50 via-white to-fuchsia-50">
+  
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-24 md:pb-8">
+    <div class="mb-8">
+      <button
+        onclick="window.history.back()"
+        class="flex items-center gap-2 text-gray-600 hover:text-violet-600 transition-colors mb-4"
+      >
+        <!-- Back arrow icon -->
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+        </svg>
+        Back
+      </button>
+      <h1 class="text-3xl font-bold bg-linear-to-r from-violet-600 to-fuchsia-600 bg-clip-text text-transparent">
+        Legal & Policies
+      </h1>
+      <p class="text-gray-600 mt-2">
+        Learn about your rights and responsibilities on Syntax and Stories
+      </p>
+    </div>
+
+    <!-- Tabs -->
+    <div class="w-full">
+      <!-- Tab List -->
+      <div class="grid w-full grid-cols-3 mb-8 bg-white border border-violet-100 rounded-xl p-1">
+        <button
+          id="tab-privacy"
+          onclick="switchTab('privacy')"
+          class="tab-button active flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 bg-violet-600 text-white"
+        >
+          <!-- Shield icon -->
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.618 5.984A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+          </svg>
+          <span class="hidden sm:inline">Privacy Policy</span>
+          <span class="sm:hidden">Privacy</span>
+        </button>
+        <button
+          id="tab-terms"
+          onclick="switchTab('terms')"
+          class="tab-button flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 text-gray-600 hover:text-violet-600 hover:bg-violet-50"
+        >
+          <!-- FileText icon -->
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+          </svg>
+          <span class="hidden sm:inline">Terms of Service</span>
+          <span class="sm:hidden">Terms</span>
+        </button>
+        <button
+          id="tab-community"
+          onclick="switchTab('community')"
+          class="tab-button flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 text-gray-600 hover:text-violet-600 hover:bg-violet-50"
+        >
+          <!-- Users icon -->
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+          </svg>
+          <span class="hidden sm:inline">Community Guidelines</span>
+          <span class="sm:hidden">Community</span>
+        </button>
+      </div>
+
+      <!-- Privacy Policy Tab -->
+      <div id="content-privacy" class="tab-content">
+        <div class="bg-white rounded-2xl shadow-lg border border-violet-100 overflow-hidden">
+          <div class="px-6 py-8 space-y-6">
+            <div>
+              <h2 class="text-2xl font-bold text-gray-900 mb-2">Privacy Policy</h2>
+              <p class="text-sm text-gray-500">Last updated: March 9, 2026</p>
+            </div>
+
+            <div class="space-y-6">
+              <section>
+                <h3 class="text-lg font-semibold text-gray-900 mb-3">Introduction</h3>
+                <p class="text-gray-700 leading-relaxed">
+                  Welcome to Syntax and Stories. We are committed to protecting your personal information and your right to privacy. This Privacy Policy explains what information we collect, how we use it, and what rights you have in relation to it.
+                </p>
+              </section>
+
+              <section>
+                <h3 class="text-lg font-semibold text-gray-900 mb-3">Information We Collect</h3>
+                <div class="space-y-3 text-gray-700">
+                  <div>
+                    <h4 class="font-medium text-gray-900 mb-2">Personal Information</h4>
+                    <ul class="list-disc list-inside space-y-1 pl-2">
+                      <li>Name and email address</li>
+                      <li>Profile information (bio, profile picture, location)</li>
+                      <li>Account credentials</li>
+                      <li>Communication preferences</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <h4 class="font-medium text-gray-900 mb-2">Content Information</h4>
+                    <ul class="list-disc list-inside space-y-1 pl-2">
+                      <li>Posts, articles, and stories you create</li>
+                      <li>Comments and interactions with other users</li>
+                      <li>Messages sent through our chat feature</li>
+                      <li>Tags, categories, and metadata you add</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <h4 class="font-medium text-gray-900 mb-2">Usage Information</h4>
+                    <ul class="list-disc list-inside space-y-1 pl-2">
+                      <li>Device information and IP address</li>
+                      <li>Browser type and operating system</li>
+                      <li>Pages visited and features used</li>
+                      <li>Time and date of visits</li>
+                    </ul>
+                  </div>
+                </div>
+              </section>
+
+              <section>
+                <h3 class="text-lg font-semibold text-gray-900 mb-3">How We Use Your Information</h3>
+                <ul class="list-disc list-inside space-y-2 text-gray-700 pl-2">
+                  <li>To provide, maintain, and improve our services</li>
+                  <li>To personalize your experience on the platform</li>
+                  <li>To communicate with you about updates, features, and support</li>
+                  <li>To ensure security and prevent fraud or abuse</li>
+                  <li>To analyze usage patterns and optimize performance</li>
+                  <li>To comply with legal obligations</li>
+                </ul>
+              </section>
+
+              <section>
+                <h3 class="text-lg font-semibold text-gray-900 mb-3">Information Sharing</h3>
+                <p class="text-gray-700 leading-relaxed mb-3">
+                  We do not sell your personal information. We may share your information only in the following circumstances:
+                </p>
+                <ul class="list-disc list-inside space-y-2 text-gray-700 pl-2">
+                  <li><span class="font-medium">Public Content:</span> Posts and comments you make publicly are visible to all users</li>
+                  <li><span class="font-medium">Service Providers:</span> With third-party vendors who help us operate the platform</li>
+                  <li><span class="font-medium">Legal Requirements:</span> When required by law or to protect our rights</li>
+                  <li><span class="font-medium">Business Transfers:</span> In connection with a merger, sale, or acquisition</li>
+                </ul>
+              </section>
+
+              <section>
+                <h3 class="text-lg font-semibold text-gray-900 mb-3">Data Security</h3>
+                <p class="text-gray-700 leading-relaxed">
+                  We implement appropriate technical and organizational measures to protect your personal information. However, no method of transmission over the internet or electronic storage is 100% secure. While we strive to protect your data, we cannot guarantee absolute security.
+                </p>
+              </section>
+
+              <section>
+                <h3 class="text-lg font-semibold text-gray-900 mb-3">Your Rights</h3>
+                <p class="text-gray-700 leading-relaxed mb-3">You have the right to:</p>
+                <ul class="list-disc list-inside space-y-2 text-gray-700 pl-2">
+                  <li>Access the personal information we hold about you</li>
+                  <li>Request correction of inaccurate data</li>
+                  <li>Request deletion of your personal information</li>
+                  <li>Object to processing of your personal information</li>
+                  <li>Request restriction of processing</li>
+                  <li>Data portability</li>
+                  <li>Withdraw consent at any time</li>
+                </ul>
+              </section>
+
+              <section>
+                <h3 class="text-lg font-semibold text-gray-900 mb-3">Data Retention</h3>
+                <p class="text-gray-700 leading-relaxed">
+                  We retain your personal information only for as long as necessary to fulfill the purposes outlined in this Privacy Policy, unless a longer retention period is required by law. When you delete your account, we will delete or anonymize your information within 30 days.
+                </p>
+              </section>
+
+              <section>
+                <h3 class="text-lg font-semibold text-gray-900 mb-3">Cookies and Tracking</h3>
+                <p class="text-gray-700 leading-relaxed">
+                  We use cookies and similar tracking technologies to track activity on our platform and hold certain information. You can instruct your browser to refuse all cookies or to indicate when a cookie is being sent.
+                </p>
+              </section>
+
+              <section>
+                <h3 class="text-lg font-semibold text-gray-900 mb-3">Children's Privacy</h3>
+                <p class="text-gray-700 leading-relaxed">
+                  Our service is not intended for children under 13 years of age. We do not knowingly collect personal information from children under 13. If you become aware that a child has provided us with personal information, please contact us.
+                </p>
+              </section>
+
+              <section>
+                <h3 class="text-lg font-semibold text-gray-900 mb-3">Changes to This Policy</h3>
+                <p class="text-gray-700 leading-relaxed">
+                  We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the "Last updated" date.
+                </p>
+              </section>
+
+              <section>
+                <h3 class="text-lg font-semibold text-gray-900 mb-3">Contact Us</h3>
+                <p class="text-gray-700 leading-relaxed">
+                  If you have questions about this Privacy Policy, please contact us at 
+                  <a href="mailto:privacy@syntaxandstories.com" class="text-violet-600 hover:text-violet-700 underline ml-1">
+                    privacy@syntaxandstories.com
+                  </a>
+                </p>
+              </section>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Terms of Service Tab -->
+      <div id="content-terms" class="tab-content hidden">
+        <div class="bg-white rounded-2xl shadow-lg border border-violet-100 overflow-hidden">
+          <div class="px-6 py-8 space-y-6">
+            <div>
+              <h2 class="text-2xl font-bold text-gray-900 mb-2">Terms of Service</h2>
+              <p class="text-sm text-gray-500">Last updated: March 9, 2026</p>
+            </div>
+
+            <div class="space-y-6">
+              <section>
+                <h3 class="text-lg font-semibold text-gray-900 mb-3">Acceptance of Terms</h3>
+                <p class="text-gray-700 leading-relaxed">
+                  By accessing and using Syntax and Stories, you accept and agree to be bound by the terms and provisions of this agreement. If you do not agree to these Terms of Service, please do not use our platform.
+                </p>
+              </section>
+
+              <section>
+                <h3 class="text-lg font-semibold text-gray-900 mb-3">Use of Service</h3>
+                <div class="space-y-3 text-gray-700">
+                  <p class="leading-relaxed">
+                    Syntax and Stories is a platform for writers and readers to share and discover stories, articles, and creative content. You agree to use the service only for lawful purposes and in accordance with these Terms.
+                  </p>
+                  <p class="font-medium text-gray-900">You agree NOT to:</p>
+                  <ul class="list-disc list-inside space-y-1 pl-2">
+                    <li>Violate any applicable laws or regulations</li>
+                    <li>Infringe on intellectual property rights of others</li>
+                    <li>Upload malicious code or harmful content</li>
+                    <li>Impersonate another person or entity</li>
+                    <li>Harass, abuse, or harm other users</li>
+                    <li>Spam or send unsolicited messages</li>
+                    <li>Attempt to gain unauthorized access to the platform</li>
+                  </ul>
+                </div>
+              </section>
+
+              <section>
+                <h3 class="text-lg font-semibold text-gray-900 mb-3">User Accounts</h3>
+                <ul class="list-disc list-inside space-y-2 text-gray-700 pl-2">
+                  <li>You must be at least 13 years old to create an account</li>
+                  <li>You are responsible for maintaining the security of your account</li>
+                  <li>You must provide accurate and complete information</li>
+                  <li>You are responsible for all activity under your account</li>
+                  <li>You must notify us immediately of any unauthorized use</li>
+                  <li>One person or legal entity may maintain only one account</li>
+                </ul>
+              </section>
+
+              <section>
+                <h3 class="text-lg font-semibold text-gray-900 mb-3">Content Ownership and Rights</h3>
+                <div class="space-y-3 text-gray-700">
+                  <div>
+                    <h4 class="font-medium text-gray-900 mb-2">Your Content</h4>
+                    <p class="leading-relaxed">
+                      You retain all rights to the content you create and post on Syntax and Stories. By posting content, you grant us a worldwide, non-exclusive, royalty-free license to use, reproduce, modify, adapt, publish, and distribute your content on the platform.
+                    </p>
+                  </div>
+                  <div>
+                    <h4 class="font-medium text-gray-900 mb-2">Our Content</h4>
+                    <p class="leading-relaxed">
+                      All intellectual property rights in the platform itself, including design, code, features, and branding, belong to Syntax and Stories and are protected by copyright, trademark, and other laws.
+                    </p>
+                  </div>
+                </div>
+              </section>
+
+              <section>
+                <h3 class="text-lg font-semibold text-gray-900 mb-3">Content Guidelines</h3>
+                <p class="text-gray-700 leading-relaxed mb-3">
+                  You are solely responsible for the content you post. We reserve the right to remove content that violates our policies:
+                </p>
+                <ul class="list-disc list-inside space-y-2 text-gray-700 pl-2">
+                  <li>Content must comply with our Community Guidelines</li>
+                  <li>No plagiarized or copyrighted material without permission</li>
+                  <li>No illegal, harmful, or offensive content</li>
+                  <li>No spam, scams, or deceptive practices</li>
+                  <li>No private information of others without consent</li>
+                </ul>
+              </section>
+
+              <section>
+                <h3 class="text-lg font-semibold text-gray-900 mb-3">Termination</h3>
+                <p class="text-gray-700 leading-relaxed">
+                  We reserve the right to suspend or terminate your account at any time for violation of these Terms or for any other reason at our discretion. You may also delete your account at any time through your account settings.
+                </p>
+              </section>
+
+              <section>
+                <h3 class="text-lg font-semibold text-gray-900 mb-3">Disclaimers</h3>
+                <div class="space-y-3 text-gray-700">
+                  <p class="leading-relaxed">
+                    THE SERVICE IS PROVIDED "AS IS" AND "AS AVAILABLE" WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED. WE DO NOT WARRANT THAT THE SERVICE WILL BE UNINTERRUPTED, SECURE, OR ERROR-FREE.
+                  </p>
+                  <p class="leading-relaxed">
+                    We are not responsible for user-generated content and do not endorse any opinions expressed by users. We make no guarantees about the accuracy, reliability, or completeness of any content on the platform.
+                  </p>
+                </div>
+              </section>
+
+              <section>
+                <h3 class="text-lg font-semibold text-gray-900 mb-3">Limitation of Liability</h3>
+                <p class="text-gray-700 leading-relaxed">
+                  TO THE MAXIMUM EXTENT PERMITTED BY LAW, SYNTAX AND STORIES SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, OR ANY LOSS OF PROFITS OR REVENUES, WHETHER INCURRED DIRECTLY OR INDIRECTLY.
+                </p>
+              </section>
+
+              <section>
+                <h3 class="text-lg font-semibold text-gray-900 mb-3">Indemnification</h3>
+                <p class="text-gray-700 leading-relaxed">
+                  You agree to indemnify and hold harmless Syntax and Stories from any claims, damages, losses, liabilities, and expenses arising from your use of the service or violation of these Terms.
+                </p>
+              </section>
+
+              <section>
+                <h3 class="text-lg font-semibold text-gray-900 mb-3">Changes to Terms</h3>
+                <p class="text-gray-700 leading-relaxed">
+                  We may modify these Terms at any time. We will notify you of material changes by posting a notice on the platform or sending you an email. Your continued use of the service after such changes constitutes acceptance of the new Terms.
+                </p>
+              </section>
+
+              <section>
+                <h3 class="text-lg font-semibold text-gray-900 mb-3">Governing Law</h3>
+                <p class="text-gray-700 leading-relaxed">
+                  These Terms shall be governed by and construed in accordance with the laws of the jurisdiction in which Syntax and Stories operates, without regard to conflict of law provisions.
+                </p>
+              </section>
+
+              <section>
+                <h3 class="text-lg font-semibold text-gray-900 mb-3">Contact Us</h3>
+                <p class="text-gray-700 leading-relaxed">
+                  If you have questions about these Terms of Service, please contact us at 
+                  <a href="mailto:legal@syntaxandstories.com" class="text-violet-600 hover:text-violet-700 underline ml-1">
+                    legal@syntaxandstories.com
+                  </a>
+                </p>
+              </section>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Community Guidelines Tab -->
+      <div id="content-community" class="tab-content hidden">
+        <div class="bg-white rounded-2xl shadow-lg border border-violet-100 overflow-hidden">
+          <div class="px-6 py-8 space-y-6">
+            <div>
+              <h2 class="text-2xl font-bold text-gray-900 mb-2">Community Guidelines</h2>
+              <p class="text-sm text-gray-500">Last updated: March 9, 2026</p>
+            </div>
+
+            <div class="space-y-6">
+              <section>
+                <h3 class="text-lg font-semibold text-gray-900 mb-3">Our Mission</h3>
+                <p class="text-gray-700 leading-relaxed">
+                  Syntax and Stories is a community built on creativity, respect, and meaningful storytelling. These guidelines help ensure our platform remains a safe, welcoming, and inspiring space for writers and readers from all backgrounds.
+                </p>
+              </section>
+
+              <section>
+                <h3 class="text-lg font-semibold text-gray-900 mb-3">Be Respectful</h3>
+                <div class="space-y-3 text-gray-700">
+                  <p class="leading-relaxed">
+                    Treat all community members with kindness and respect, even when you disagree.
+                  </p>
+                  <ul class="list-disc list-inside space-y-2 pl-2">
+                    <li>No harassment, bullying, or personal attacks</li>
+                    <li>No hate speech, discrimination, or bigotry</li>
+                    <li>Respect diverse perspectives and experiences</li>
+                    <li>Provide constructive criticism, not destructive comments</li>
+                    <li>Respect others' privacy and personal boundaries</li>
+                  </ul>
+                </div>
+              </section>
+
+              <section>
+                <h3 class="text-lg font-semibold text-gray-900 mb-3">Create Original Content</h3>
+                <div class="space-y-3 text-gray-700">
+                  <p class="leading-relaxed">
+                    We celebrate original creativity and authentic voices.
+                  </p>
+                  <ul class="list-disc list-inside space-y-2 pl-2">
+                    <li>Post only content you have created or have permission to share</li>
+                    <li>Give proper credit when inspired by or referencing others' work</li>
+                    <li>No plagiarism or copyright infringement</li>
+                    <li>Be authentic and true to your voice</li>
+                  </ul>
+                </div>
+              </section>
+
+              <section>
+                <h3 class="text-lg font-semibold text-gray-900 mb-3">Keep Content Appropriate</h3>
+                <div class="space-y-3 text-gray-700">
+                  <p class="leading-relaxed">
+                    While we support creative expression, certain content is not permitted:
+                  </p>
+                  <ul class="list-disc list-inside space-y-2 pl-2">
+                    <li><span class="font-medium">No illegal content:</span> Content that violates laws or promotes illegal activity</li>
+                    <li><span class="font-medium">No explicit sexual content:</span> Pornographic or sexually explicit material</li>
+                    <li><span class="font-medium">No graphic violence:</span> Excessively violent or gory content</li>
+                    <li><span class="font-medium">No dangerous content:</span> Instructions for harmful or dangerous activities</li>
+                    <li><span class="font-medium">No misinformation:</span> Deliberately false or misleading information</li>
+                    <li><span class="font-medium">No self-harm promotion:</span> Content encouraging self-harm or suicide</li>
+                  </ul>
+                  <p class="leading-relaxed mt-3 italic">
+                    Note: Mature themes can be explored thoughtfully in storytelling with appropriate content warnings.
+                  </p>
+                </div>
+              </section>
+
+              <section>
+                <h3 class="text-lg font-semibold text-gray-900 mb-3">No Spam or Self-Promotion</h3>
+                <ul class="list-disc list-inside space-y-2 text-gray-700 pl-2">
+                  <li>Don't post repetitive or irrelevant content</li>
+                  <li>No excessive self-promotion or advertising</li>
+                  <li>No manipulating engagement (e.g., "like for like" schemes)</li>
+                  <li>No posting the same content repeatedly</li>
+                  <li>Keep comments relevant to the post</li>
+                </ul>
+              </section>
+
+              <section>
+                <h3 class="text-lg font-semibold text-gray-900 mb-3">Protect Privacy</h3>
+                <ul class="list-disc list-inside space-y-2 text-gray-700 pl-2">
+                  <li>Don't share others' personal information without consent</li>
+                  <li>Respect the privacy of minors</li>
+                  <li>Don't impersonate others</li>
+                  <li>Be mindful when sharing personal stories about others</li>
+                </ul>
+              </section>
+
+              <section>
+                <h3 class="text-lg font-semibold text-gray-900 mb-3">Engage Constructively</h3>
+                <div class="space-y-3 text-gray-700">
+                  <p class="leading-relaxed">
+                    Build a positive community through meaningful interactions:
+                  </p>
+                  <ul class="list-disc list-inside space-y-2 pl-2">
+                    <li>Provide thoughtful feedback that helps others grow</li>
+                    <li>Celebrate others' successes and milestones</li>
+                    <li>Ask questions and engage in genuine discussions</li>
+                    <li>Support new writers and welcome newcomers</li>
+                    <li>Report content that violates guidelines</li>
+                  </ul>
+                </div>
+              </section>
+
+              <section>
+                <h3 class="text-lg font-semibold text-gray-900 mb-3">Content Warnings</h3>
+                <p class="text-gray-700 leading-relaxed">
+                  When your content contains sensitive themes (violence, death, mental health issues, etc.), please use content warnings or tags to help readers make informed choices about what they read.
+                </p>
+              </section>
+
+              <section>
+                <h3 class="text-lg font-semibold text-gray-900 mb-3">Reporting Violations</h3>
+                <div class="space-y-3 text-gray-700">
+                  <p class="leading-relaxed">
+                    If you see content or behavior that violates these guidelines:
+                  </p>
+                  <ul class="list-disc list-inside space-y-2 pl-2">
+                    <li>Use the report feature to flag the content</li>
+                    <li>Provide specific details about the violation</li>
+                    <li>Don't engage with or respond to harmful content</li>
+                    <li>Our moderation team will review all reports</li>
+                  </ul>
+                </div>
+              </section>
+
+              <section>
+                <h3 class="text-lg font-semibold text-gray-900 mb-3">Consequences</h3>
+                <div class="space-y-3 text-gray-700">
+                  <p class="leading-relaxed">
+                    Violations of these guidelines may result in:
+                  </p>
+                  <ul class="list-disc list-inside space-y-2 pl-2">
+                    <li>Content removal</li>
+                    <li>Warning messages</li>
+                    <li>Temporary suspension</li>
+                    <li>Permanent account termination</li>
+                    <li>Reporting to law enforcement (for illegal activity)</li>
+                  </ul>
+                  <p class="leading-relaxed mt-3">
+                    We apply these consequences fairly and proportionally, taking into account the severity and frequency of violations.
+                  </p>
+                </div>
+              </section>
+
+              <section>
+                <h3 class="text-lg font-semibold text-gray-900 mb-3">Appeals</h3>
+                <p class="text-gray-700 leading-relaxed">
+                  If you believe content was removed or your account was suspended in error, you may appeal the decision by contacting 
+                  <a href="mailto:appeals@syntaxandstories.com" class="text-violet-600 hover:text-violet-700 underline ml-1">
+                    appeals@syntaxandstories.com
+                  </a>
+                  . Include details about the specific content or action you're appealing.
+                </p>
+              </section>
+
+              <section>
+                <h3 class="text-lg font-semibold text-gray-900 mb-3">Be Part of Something Special</h3>
+                <p class="text-gray-700 leading-relaxed">
+                  Together, we're building a community where creativity thrives, diverse voices are heard, and meaningful connections are made through the power of storytelling. Thank you for being part of Syntax and Stories and helping make it a positive space for everyone.
+                </p>
+              </section>
+
+              <section>
+                <h3 class="text-lg font-semibold text-gray-900 mb-3">Questions?</h3>
+                <p class="text-gray-700 leading-relaxed">
+                  If you have questions about these Community Guidelines, please contact us at 
+                  <a href="mailto:community@syntaxandstories.com" class="text-violet-600 hover:text-violet-700 underline ml-1">
+                    community@syntaxandstories.com
+                  </a>
+                </p>
+              </section>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="{% static 'js/privacy.js' %}"></script>
+{% endblock %}
+
+

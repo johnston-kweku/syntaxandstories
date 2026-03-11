@@ -50,17 +50,6 @@ def login_view(request):
 def profile_view(request, username):
     user = get_object_or_404(User.objects.select_related("profile"), username=username)
     is_owner = request.user == user
-    posts = (
-        Post.objects.filter(author=user)
-        .prefetch_related('comments')
-        .annotate(
-            comments_count=Count('comments', distinct=True)
-        )
-        .order_by("-created_at")
-        )
-    
-    liked_posts = Post.objects.filter(likes__user=user).distinct().exclude(author=user)
-    saved_posts = Post.objects.filter(saved_by__user=user).distinct().order_by('-created_at')
 
     user_saves_prefetch = Prefetch(
         "saved_by",
@@ -73,6 +62,19 @@ def profile_view(request, username):
         queryset=Like.objects.filter(user=request.user),
         to_attr='user_liked'
     )
+    posts = (
+        Post.objects.filter(author=user)
+        .prefetch_related('comments', user_likes_prefetch, user_saves_prefetch)
+        .annotate(
+            comments_count=Count('comments', distinct=True)
+        )
+        .order_by("-created_at")
+        )
+    
+    liked_posts = Post.objects.filter(likes__user=user).distinct().exclude(author=user)
+    saved_posts = Post.objects.filter(saved_by__user=user).distinct().order_by('-created_at')
+
+   
 
     followers_count = user.followers.count()
     following_count = user.following.count()
@@ -164,3 +166,6 @@ def toggle_follow(request, username):
     
 def settings_view(request):
     return render(request, 'user/settings.html')
+
+def privacy_and_terms(request):
+    return render(request, 'user/privacy.html')
