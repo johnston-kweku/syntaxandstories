@@ -152,16 +152,20 @@ def toggle_follow(request, username):
                 following = False
 
             followers_count = user_to_follow.followers.count()
+            following_count = Follow.objects.filter(follower=request.user).count()
 
             is_following = Follow.objects.filter(
                 follower=request.user,
                 following=user_to_follow
             ).exists()
 
+
         return JsonResponse({
+            'success':True,
             'following':following,
             'followers_count':followers_count,
-            'is_following':is_following
+            'is_following':is_following,
+            'following_count':following_count,
         })
 
 @login_required 
