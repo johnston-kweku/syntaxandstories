@@ -37,7 +37,7 @@
         }
     });
 
-    // Optional: Update URL hash when tab changes (for bookmarking/sharing)
+
     // Create a safe wrapper that captures the original `switchTab`
     // so assigning a global does not cause recursive calls.
     const _baseSwitchTab = switchTab;

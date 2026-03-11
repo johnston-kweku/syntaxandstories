@@ -9,8 +9,8 @@
   
   <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-24 md:pb-8">
     <div class="mb-8">
-      <button
-        onclick="window.history.back()"
+      <a href="{% url 'user:settings' %}"
+
         class="flex items-center gap-2 text-gray-600 hover:text-violet-600 transition-colors mb-4"
       >
         <!-- Back arrow icon -->
@@ -18,7 +18,7 @@
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
         </svg>
         Back
-      </button>
+      </a>
       <h1 class="text-3xl font-bold bg-linear-to-r from-violet-600 to-fuchsia-600 bg-clip-text text-transparent">
         Legal & Policies
       </h1>
