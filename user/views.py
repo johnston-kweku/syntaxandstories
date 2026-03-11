@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import logout, login, authenticate
+from django.contrib.auth import logout, login, authenticate, update_session_auth_hash
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.db.models import Sum, Count, Prefetch
 from django.db import transaction
-from .forms import UserCreationForm, ProfileForm, ChangeEmailForm
+from .forms import UserCreationForm, ProfileForm, ChangeEmailForm, ChangePasswordForm
 from .models import UserProfile, Follow
 from syntaxandstories.models import Post, SavedPosts, Like
 
@@ -193,3 +193,29 @@ def change_email(request):
             'success':False,
             'errors':errors
         })
+    
+
+def change_password(request):
+    if request.method == 'POST':
+        form = ChangePasswordForm(request.POST, instance=request.user)
+
+        if form.is_valid():
+            request.user.set_password(form.cleaned_data['new_password'])
+            request.user.save()
+
+            update_session_auth_hash(request, user=request.user)
+            return JsonResponse({
+                'success':True,
+                'message':'Password changed successfully'
+            })
+        
+        errors = {field:error.get_json_data() for field, error in form.errors.items()}
+        return JsonResponse({
+            'success':False,
+            'message':'Passwords mismatch'
+        })
+    
+    return JsonResponse({
+        'success':False,
+        'message':'Invalid request'
+    })

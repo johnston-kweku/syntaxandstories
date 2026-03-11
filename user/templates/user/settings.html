@@ -43,7 +43,7 @@
         </div>
 
         <!-- Change Password -->
-        <div class="w-full select-none active:scale-95 bg-white border-t border-gray-300 p-3 text-black flex items-center justify-between hover:bg-violet-200 transition-all duration-500">
+        <div id="open-password-modal" class="w-full select-none active:scale-95 bg-white border-t border-gray-300 p-3 text-black flex items-center justify-between hover:bg-violet-200 transition-all duration-500">
             <div class="flex gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10 stroke-violet-600 bg-violet-200 p-2 rounded-lg">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
@@ -205,6 +205,23 @@
     </form>
   </div>
 </div>
+
+<!-- Password Change Modal -->
+<div id="password-modal" class="hidden fixed inset-0 bg-none bg-opacity-50 z-50 items-center justify-center">
+    <div class="bg-white/80 backdrop-blur-md rounded-xl p-6 w-11/12 sm:w-96 relative transform transition-all scale-95 opacity-0">
+        <button id="close-password-modal" class="absolute top-3 right-3 text-gray-500 hover:text-gray-900">&times;</button>
+        <h2 class="text-xl font-bold mb-4">Change Password</h2>
+        <form id="password-form">
+            <input type="password" name="current_password" placeholder="Current Password" class="w-full border rounded-xl px-4 py-2 mb-3 focus:ring-2 focus:ring-violet-500 outline-none" required>
+            <input type="password" name="new_password" placeholder="New Password" class="w-full border rounded-xl px-4 py-2 mb-3 focus:ring-2 focus:ring-violet-500 outline-none" required>
+            <input type="password" name="confirm_password" placeholder="Confirm Password" class="w-full border rounded-xl px-4 py-2 mb-3 focus:ring-2 focus:ring-violet-500 outline-none" required>
+            <button type="submit" class="bg-violet-500 text-white px-4 py-2 rounded-xl w-full hover:bg-violet-600">Change Password</button>
+        </form>
+        <div id="password-form-messages" class="mt-3 text-sm"></div>
+    </div>
+</div>
+
+
 
 </div>
 <script src="{% static 'js/settings.js' %}"></script>

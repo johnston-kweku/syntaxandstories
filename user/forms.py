@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from .models import UserProfile
+from django.contrib.auth.password_validation import validate_password
 
 
 class UserCreationForm(forms.ModelForm):
@@ -92,3 +93,50 @@ class ChangeEmailForm(forms.ModelForm):
         if not user.check_password(password):
             raise forms.ValidationError("Incorrect password")
         return password
+    
+class ChangePasswordForm(forms.ModelForm):
+    current_password = forms.CharField(
+        label="Current Password",
+        widget=forms.PasswordInput(attrs={
+            "class":"w-full border rounded-xl px-4 py-2 focus:ring-2 focus:ring-violet-500 outline-none",
+            "placeholder":"Enter your current password"
+        })
+    )
+
+    new_password = forms.CharField(
+        label="New Password",
+        widget=forms.PasswordInput(attrs={
+            "class":"w-full border rounded-xl px-4 py-2 focus:ring-2 focus:ring-violet-500 outline-none",
+            "placehlder":"Enter new password"
+        }),
+        validators=[validate_password]
+    )
+
+    confirm_password = forms.CharField(
+        label="Confirm New password",
+        widget=forms.PasswordInput(attrs={
+            "class":"w-full border rounded-xl px-4 py-2 focus:ring-2 focus:ring-violet-500 outline-none",
+            "placeholder":"Confirm new password"
+        })
+    ) 
+
+    class Meta:
+        model = User
+        fields = []
+
+    def clean_current_password(self):
+        current_password = self.cleaned_data.get("current_password")
+        user = self.instance
+
+        if not user.check_password(current_password):
+            raise forms.ValidationError("Incorrect Current Password")
+        return current_password
+    
+
+    def clean(self):
+        cleaned_data = super().clean()
+        new_password = cleaned_data.get("new_password")
+        confirm_password = cleaned_data.get("confirm_password")
+
+        if new_password and confirm_password and new_password != confirm_password:
+            self.add_error("current_password", "Passwords do not match")
