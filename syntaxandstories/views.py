@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.db import transaction
@@ -8,7 +8,7 @@ from collections import defaultdict
 from django.views.decorators.http import require_POST
 from .models import Post, Comment, Like, SavedPosts
 from user.models import Follow
-from .forms import CommentForm
+from .forms import PostForm
 
 # Create your views here.
 def home(request):
@@ -215,3 +215,20 @@ def delete_comment(request, comment_id):
         'success':False,
         'error':'Invalid request method'
     })
+
+
+def create_post(request):
+    if request.method == 'POST':
+        form = PostForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('syntaxandstories:feed')
+        
+    else:
+        form = PostForm()
+
+    context = {
+        'form':form
+    }
+
+    return render(request, 'syntaxandstories/create_post.html', context)

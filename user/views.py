@@ -72,8 +72,20 @@ def profile_view(request, username):
         .order_by("-created_at")
         )
     
-    liked_posts = Post.objects.filter(likes__user=user).distinct().exclude(author=user)
-    saved_posts = Post.objects.filter(saved_by__user=user).distinct().order_by('-created_at')
+    liked_posts = (
+        Post.objects.filter(likes__user=user)
+        .distinct()
+        .exclude(author=user)
+        .prefetch_related('comments', user_likes_prefetch, user_saves_prefetch)
+        .order_by('-created_at')
+    )
+
+    saved_posts = (
+        Post.objects.filter(saved_by__user=user)
+        .distinct()
+        .prefetch_related('comments', user_likes_prefetch, user_saves_prefetch)
+        .order_by('-created_at')
+    )
 
    
 
@@ -88,7 +100,8 @@ def profile_view(request, username):
         follower=request.user,
         following=user
     ).exists()
-    
+    print("User liked:", bool(user_likes_prefetch))
+    print("User saved:", bool(user_saves_prefetch))
     context = {
         'user':user,
         'user_profile':user.profile,
