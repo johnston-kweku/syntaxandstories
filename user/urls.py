@@ -9,7 +9,8 @@ urlpatterns = [
     path('profile/edit/<str:username>/', views.edit_profile_view, name='edit_profile'),
     path('follow/<str:username>/', views.toggle_follow, name='follow'),
     path('settings/', views.settings_view, name='settings'),
-    path('privacy/', views.privacy_and_terms, name='privacy'),
+    path('settings/privacy/', views.privacy_and_terms, name='privacy'),
     path('change/email/', views.change_email, name='change_email'),
     path('change/password/', views.change_password, name='change_password'),
+    path('followers/list/', views.followers_list, name='followers_list'),
 ]

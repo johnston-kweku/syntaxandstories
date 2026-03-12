@@ -223,3 +223,17 @@ def change_password(request):
         'success':False,
         'message':'Invalid request'
     })
+
+
+def followers_list(request):
+    followers = Follow.objects.filter(
+        following=request.user
+    )
+    
+    for follower in followers:
+        print(follower.follower)
+    context = {
+        'followers':followers
+    }
+
+    return render(request, 'user/followers_list.html', context)

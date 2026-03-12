@@ -1,0 +1,12 @@
+{% extends 'syntaxandstories/base.html' %}
+
+{% block content %}
+<div class="bg-white text-black w-11/12 mx-auto">
+Hello
+{% for follower in followers %}
+{{follower.following}}
+
+{% endfor %}
+</div>
+
+{% endblock content %}
