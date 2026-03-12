@@ -114,30 +114,55 @@ buttons.forEach(btn => {
 
         // reset all buttons
         buttons.forEach(b => {
-            b.classList.remove("bg-violet-50","border-violet-600","bg-fuchsia-50","border-fuchsia-600")
+            b.classList.remove(
+                "bg-violet-50","border-violet-600",
+                "bg-fuchsia-100","border-fuchsia-600",
+                "bg-green-100","border-green-600",
+                "bg-yellow-100","border-yellow-600"
+            )
             b.classList.add("bg-gray-50","border-transparent")
 
             const icon = b.querySelector(".icon-box")
-            icon.classList.remove("bg-violet-600","bg-fuchsia-600")
-            icon.classList.add("bg-gray-300")
+            if(icon){
+                icon.classList.remove(
+                    "bg-violet-600",
+                    "bg-fuchsia-600",
+                    "bg-green-500",
+                    "bg-yellow-500"
+                )
+
+                icon.classList.add("bg-gray-300")
+            }
         })
 
         // activate selected button
-        if(category === "tech"){
-            btn.classList.add("bg-violet-50","border-violet-600")
+        if(category === "TECH"){
+            btn.classList.add("bg-violet-100","border-violet-600")
             btn.classList.remove("bg-gray-50")
 
             btn.querySelector(".icon-box").classList.add("bg-violet-600")
         }
 
-        if(category === "story"){
-            btn.classList.add("bg-fuchsia-50","border-fuchsia-600")
+        if(category === "STORY"){
+            btn.classList.add("bg-fuchsia-100","border-fuchsia-600")
             btn.classList.remove("bg-gray-50")
 
             btn.querySelector(".icon-box").classList.add("bg-fuchsia-600")
         }
 
-        
+        if(category === "LIFESTYLE") {
+            btn.classList.add("bg-green-100", "border-green-600")
+            btn.classList.remove("bg-gray-50")
+
+            btn.querySelector(".icon-box").classList.add("bg-green-500")
+        }
+
+        if(category === "OTHER") {
+            btn.classList.add("bg-yellow-100", "border-yellow-600")
+            btn.classList.remove("bg-gray-50")
+
+            btn.querySelector(".icon-box").classList.add("bg-yellow-600")
+        }
     })
 
 })
