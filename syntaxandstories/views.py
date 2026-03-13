@@ -230,6 +230,15 @@ def create_post(request):
 
         status = request.POST.get("status")
 
+        # Prevent empty post
+        if status == 'PUBLISH' and not title and not media and not content:
+            messages.error(request, "Cannot publish an empty post")
+            return render(request, 'syntaxandstories/create_post.html')
+        
+        if status == "DRAFT" and not title and not media and not content:
+            messages.error(request, "Cannot save empty draft")
+            return render(request, 'syntaxnadstories/create_post.html')
+
         Post.objects.create(
                 author=request.user,
                 title=title,
@@ -238,18 +247,20 @@ def create_post(request):
                 category=category,
                 status=status
             )
-
-        if status == 'PUBLISH':
-            return render(request, "syntaxandstories/create_post.html", {
-                'redirect_url': reverse('syntaxandstories:feed')
-            })
-        elif status == 'DRAFT':
-            if not title and not content and not media:
-                messages.error(request, "Cannot save empty draft")
-                
-            else:
-                messages.success(request, "Draft saved successfully")
-
-            return render(request, "syntaxandstories/create_post.html")
+        
+        if status == "DRAFT":
+            messages.success(request, "Draft saved succesfully")
+            return render(request, 'syntaxandstories/create_post.html')
+        
+        if status == "PUBLISH":
+            return redirect("syntaxandstories:feed")
 
     return render(request, "syntaxandstories/create_post.html")
+
+
+def delete_post(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    if request.method == 'POST':
+        if request.user == post.author:
+            post.delete()
+        return JsonResponse()
