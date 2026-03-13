@@ -3,10 +3,10 @@
 
 {% block content %}
 <div class="w-11/12 sm:w-8/12 mx-auto bg-white/40 backdrop-blur-md mb-28">
-    <div id="toast-container" class="fixed top-4 right-4 z-50"></div>
+    <div id="toast-container" class="fixed top-2 right-4 z-50"></div>
 
     {% if messages %}
-    <div id="django-messages" class="hidden">
+    <div id="django-messages" class="">
         {% for msg in messages %}
             <div data-tags="{{ msg.tags }}">{{ msg }}</div>
         {% endfor %}

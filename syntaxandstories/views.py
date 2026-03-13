@@ -240,13 +240,13 @@ def create_post(request):
             )
 
         if status == 'PUBLISH':
-            messages.success(request, "Post published successfully")
             return render(request, "syntaxandstories/create_post.html", {
                 'redirect_url': reverse('syntaxandstories:feed')
             })
         elif status == 'DRAFT':
             if not title and not content and not media:
                 messages.error(request, "Cannot save empty draft")
+                
             else:
                 messages.success(request, "Draft saved successfully")
 

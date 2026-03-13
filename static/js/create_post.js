@@ -158,6 +158,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+
+
 const buttons = document.querySelectorAll(".category-btn")
 const categoryInput = document.getElementById("category-input")
 
@@ -173,7 +175,7 @@ buttons.forEach(btn => {
         // reset all buttons
         buttons.forEach(b => {
             b.classList.remove(
-                "bg-violet-50","border-violet-600",
+                "bg-violet-100","border-violet-600",
                 "bg-fuchsia-100","border-fuchsia-600",
                 "bg-green-100","border-green-600",
                 "bg-yellow-100","border-yellow-600"
