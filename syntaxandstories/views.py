@@ -4,8 +4,10 @@ from django.http import JsonResponse
 from django.db import transaction
 from django.db.models import Count, Prefetch, F, Exists, OuterRef
 from django.utils import timezone
+from django.contrib import messages
 from collections import defaultdict
 from django.views.decorators.http import require_POST
+from django.urls import reverse
 from .models import Post, Comment, Like, SavedPosts
 from user.models import Follow
 from .forms import PostForm
@@ -40,7 +42,7 @@ def feed(request):
 
     # Fetch all posts
     posts = (
-        Post.objects.all()
+        Post.objects.all().filter(status="PUBLISH")
         .select_related('author')
         .prefetch_related('comments', user_likes_prefetch, user_saves_prefetch)
         .annotate(
@@ -216,21 +218,38 @@ def delete_comment(request, comment_id):
         'error':'Invalid request method'
     })
 
-
+@login_required
 def create_post(request):
-    if request.method == 'POST':
-        form = PostForm(request.POST, request.FILES)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.author = request.user
-            post.save()
-            return redirect('syntaxandstories:feed')
-        
-    else:
-        form = PostForm()
 
-    context = {
-        'form':form
-    }
+    if request.method == "POST":
 
-    return render(request, 'syntaxandstories/create_post.html', context)
+        title = request.POST.get("title")
+        content = request.POST.get("content")
+        media = request.FILES.get("media")
+        category = request.POST.get("category")
+
+        status = request.POST.get("status")
+
+        Post.objects.create(
+                author=request.user,
+                title=title,
+                content=content,
+                media=media,
+                category=category,
+                status=status
+            )
+
+        if status == 'PUBLISH':
+            messages.success(request, "Post published successfully")
+            return render(request, "syntaxandstories/create_post.html", {
+                'redirect_url': reverse('syntaxandstories:feed')
+            })
+        elif status == 'DRAFT':
+            if not title and not content and not media:
+                messages.error(request, "Cannot save empty draft")
+            else:
+                messages.success(request, "Draft saved successfully")
+
+            return render(request, "syntaxandstories/create_post.html")
+
+    return render(request, "syntaxandstories/create_post.html")

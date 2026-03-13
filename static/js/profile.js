@@ -115,6 +115,29 @@ function initProfileInteractions(root = document){
     });
   });
 
+  // Expand / Collapse post content
+  root.querySelectorAll('.expand-btn').forEach(btn => {
+    if (btn.dataset.init === '1') return;
+    btn.dataset.init = '1';
+    btn.addEventListener('click', () => {
+      // find nearest ancestor that contains .post-content
+      let ancestor = btn;
+      let content = null;
+      while (ancestor && ancestor !== document.body) {
+        if (ancestor.querySelector && ancestor.querySelector('.post-content')) {
+          content = ancestor.querySelector('.post-content');
+          break;
+        }
+        ancestor = ancestor.parentElement;
+      }
+
+      const helperText = btn.querySelector('.helper-text');
+      if (!content || !helperText) return;
+      helperText.textContent = helperText.textContent === 'Collapse' ? 'Expand' : 'Collapse';
+      content.classList.toggle('line-clamp-3');
+    });
+  });
+
 }
 
 // Initialize interactions on initial load

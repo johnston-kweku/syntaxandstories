@@ -13,6 +13,10 @@ class Post(models.Model):
         LIFESTYLE = 'LIFESTYLE', 'Lifestyle'
         OTHER = 'OTHER', 'Other'
 
+    class Status(models.TextChoices):
+        DRAFT = 'DRAFT', 'Draft'
+        PUBLISH = 'PUBLISH', 'Publish' 
+
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=200, null=True, blank=True)
     content = models.TextField(max_length=6000, null=True, blank=True)
@@ -24,11 +28,15 @@ class Post(models.Model):
         choices=Category.choices,
         default=Category.OTHER,
     )
+    status = models.CharField(
+        choices=Status.choices,
+        default=Status.PUBLISH
+    )
 
 
     likes_count = models.PositiveBigIntegerField(default=0)
     saves_count = models.PositiveBigIntegerField(default=0)
-    is_draft = models.BooleanField(blank=True, null=True)
+
 
     def __str__(self):
         return self.title if self.title else 'Untitled Post'

@@ -98,6 +98,64 @@ document.addEventListener('DOMContentLoaded', () => {
 
     txt.addEventListener('input', updateCount);
     updateCount();
+    // Render Django messages as toasts if present
+    const msgsRoot = document.getElementById('django-messages');
+    if (msgsRoot) {
+        const toastContainer = document.getElementById('toast-container') || (() => {
+            const c = document.createElement('div');
+            c.id = 'toast-container';
+            c.className = 'fixed top-4 right-4 z-50';
+            document.body.appendChild(c);
+            return c;
+        })();
+
+        function showToast(text, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = 'mb-3 max-w-sm w-full text-white rounded-lg shadow-lg overflow-hidden animate-slide-in';
+            let bg = 'bg-gray-800';
+            if (type.indexOf('success') !== -1) bg = 'bg-green-500';
+            if (type.indexOf('error') !== -1) bg = 'bg-red-500';
+            if (type.indexOf('warning') !== -1) bg = 'bg-yellow-500 text-black';
+
+            toast.className += ' ' + bg + ' p-3 flex items-start justify-between';
+
+            const content = document.createElement('div');
+            content.innerText = text;
+
+            const close = document.createElement('button');
+            close.innerText = '✕';
+            close.className = 'ml-3 font-bold';
+            close.addEventListener('click', () => {
+                toast.remove();
+            });
+
+            toast.appendChild(content);
+            toast.appendChild(close);
+            toastContainer.appendChild(toast);
+
+            // Auto dismiss
+            setTimeout(() => {
+                if (toast.parentNode) toast.remove();
+            }, 4000);
+        }
+
+        const children = Array.from(msgsRoot.children);
+        children.forEach(ch => {
+            const tags = ch.dataset.tags || '';
+            const text = ch.textContent.trim();
+            if (text) showToast(text, tags);
+        });
+        // If a redirect URL is present, wait 3 seconds then navigate
+        const redirectEl = document.getElementById('post-redirect');
+        if (redirectEl) {
+            const url = redirectEl.dataset.url;
+            if (url) {
+                setTimeout(() => {
+                    window.location.href = url;
+                }, 3000);
+            }
+        }
+    }
 });
 
 const buttons = document.querySelectorAll(".category-btn")

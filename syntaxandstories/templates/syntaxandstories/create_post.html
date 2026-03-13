@@ -3,6 +3,18 @@
 
 {% block content %}
 <div class="w-11/12 sm:w-8/12 mx-auto bg-white/40 backdrop-blur-md mb-28">
+    <div id="toast-container" class="fixed top-4 right-4 z-50"></div>
+
+    {% if messages %}
+    <div id="django-messages" class="hidden">
+        {% for msg in messages %}
+            <div data-tags="{{ msg.tags }}">{{ msg }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% if redirect_url %}
+    <div id="post-redirect" data-url="{{ redirect_url }}" class="hidden"></div>
+    {% endif %}
     <div class="w-full flex gap-2 flex-col items-start">
         <button onclick="history.back()" type="button" class="font-bold text-xl">
             Back
@@ -53,7 +65,7 @@
             </button>
         </div>
         <div class="w-full bg-white rounded-2xl p-4 border space-y-2  border-gray-100 shadow-2xl">
-            <button type="submit"  class="flex hover:shadow-2xl cursor-pointer active:scale-95 w-full gap-2 rounded-2xl items-center justify-center p-2 bg-linear-to-r from-violet-600 to-fuchsia-600">
+            <button type="submit" name="status" value="PUBLISH"  class="flex hover:shadow-2xl cursor-pointer active:scale-95 w-full gap-2 rounded-2xl items-center justify-center p-2 bg-linear-to-r from-violet-600 to-fuchsia-600">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 stroke-white">
                 <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
                 </svg>
@@ -61,7 +73,7 @@
                     Publish Post
                 </p>
             </button>
-            <button type="button" class="border border-gray-300 text-gray-500 hover:shadow-2xl rounded-2xl p-2 w-full flex items-center justify-center font-bold text-lg ">
+            <button type="submit" name="status" value="DRAFT" class="border border-gray-300 text-gray-500 hover:shadow-2xl rounded-2xl p-2 w-full flex items-center justify-center font-bold text-lg ">
                 Save Draft
             </button>
             <button type="button" class="border border-gray-300 text-gray-500 hover:shadow-2xl rounded-2xl p-2 w-full flex items-center justify-center font-bold text-lg ">
