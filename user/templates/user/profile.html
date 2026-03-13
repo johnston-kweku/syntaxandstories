@@ -194,6 +194,7 @@
     <div id="posts-section" class="flex-col items-center sm:items-start w-full sm:w-auto py-8">
 
     {% for post in posts %}
+    
 
         <div class="bg-white shadow-lg select-none hover:shadow-2xl rounded-2xl w-full mb-10">
             <!-- Post media -->
@@ -267,7 +268,30 @@
             </div>
 
             <!-- Post Actions -->
-            <div class="flex justify-end px-6 py-3 border-y mx-2 my-2 border-gray-200 text-gray-600 text-sm">
+            <div class="flex {% if request.user == post.author %} justify-between {% else %} justify-end {% endif %} px-6 py-3 border-y mx-2 my-2 border-gray-200 text-gray-600 text-sm items-center">
+                <!-- Delete post -->
+                 {% if post.author == request.user %}
+                 <button data-post-id="{{post.id}}" type="button" class="delete-btn bg-red-500 p-3 rounded-xl px-4 font-bold text-white active:scale-95 cursor-pointer">
+                    Delete Post
+                 </button>
+                 {% endif %}
+
+
+
+                <!-- Post status -->
+                 {% if post.author == request.user %}
+                <div class="px-6 font-bold text-gray-600">
+                    {% if post.status == 'PUBLISH' %}
+                    <p>
+                        Published
+                    </p>
+                    {% elif post.status == 'DRAFT' %}
+                    <p>
+                        Draft
+                    </p>
+                    {% endif %}
+                </div>
+                {% endif %}
 
                 <div class="flex gap-6">
 

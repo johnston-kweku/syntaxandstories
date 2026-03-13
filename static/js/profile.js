@@ -297,3 +297,29 @@ if(savedTab){ savedTab.addEventListener('click', async () => { hideAll(); if(sav
 
 // Initialize default active tab state
 if (!postsSection?.classList.contains('hidden')) { setActiveTab(postsTab); } else if (!likedSection?.classList.contains('hidden')) { setActiveTab(likedTab); } else if (!savedSection?.classList.contains('hidden')) { setActiveTab(savedTab); }
+
+
+
+const deleteBtn = document.querySelectorAll(".delete-btn")
+
+deleteBtn.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const postId = btn.dataset.postId
+    console.log(postId)
+    fetch(`/delete/${postId}/`, {
+      method:'POST',
+      headers:{
+        'X-CSRFToken':getCookie('csrftoken'),
+        'Content-Type':'application/json'
+      }
+    })
+    .then(res => res.json())
+    .then((data) => {
+      if(data.success) {
+        console.log("Success")
+      }else{
+        console.log("Failure")
+      }
+    })
+  })
+})

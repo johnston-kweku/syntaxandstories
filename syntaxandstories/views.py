@@ -263,4 +263,10 @@ def delete_post(request, post_id):
     if request.method == 'POST':
         if request.user == post.author:
             post.delete()
-        return JsonResponse()
+            return JsonResponse({
+                'success':True
+            })
+    
+    return JsonResponse({
+        'success':False
+    })

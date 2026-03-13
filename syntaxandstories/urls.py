@@ -10,5 +10,6 @@ urlpatterns = [
     path('save/<int:post_id>/', views.save_post, name='save_post'),
     path('post/<int:post_id>/comment/', views.add_comment, name='add_comment'),
     path('comment/<int:comment_id>/delete/', views.delete_comment, name='delete_comment'),
-    path('create/post/', views.create_post, name='create_post')
+    path('create/post/', views.create_post, name='create_post'),
+    path('delete/<int:post_id>/', views.delete_post, name='delete_post')
 ]
