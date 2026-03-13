@@ -28,7 +28,7 @@ class Post(models.Model):
 
     likes_count = models.PositiveBigIntegerField(default=0)
     saves_count = models.PositiveBigIntegerField(default=0)
-
+    is_draft = models.BooleanField(blank=True, null=True)
 
     def __str__(self):
         return self.title if self.title else 'Untitled Post'
@@ -74,3 +74,7 @@ class SavedPosts(models.Model):
     
     class Meta:
         verbose_name_plural = 'Saved Posts'
+
+        constraints = [
+            models.UniqueConstraint(fields=['user','post'], name='unique_saved_post')
+        ]

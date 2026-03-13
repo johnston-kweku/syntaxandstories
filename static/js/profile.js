@@ -61,21 +61,43 @@ function initProfileInteractions(root = document){
   root.querySelectorAll('.save-btn').forEach(btn => {
     if(btn.dataset.init === '1') return;
     btn.dataset.init = '1';
-    btn.addEventListener('click', () => {
-      const postIdSave = btn.dataset.postIdSave || btn.getAttribute('data-post-id-save');
-      if(!postIdSave) return;
-      btn.disabled = true;
-      fetch(`/save/${postIdSave}/`, { method:'POST', headers: { 'X-CSRFToken': getCookie('csrftoken'), 'Content-Type':'application/json' } })
-        .then(res => res.json())
-        .then(data => {
-          const countSpan = btn.parentElement.querySelector('.save-count');
-          if(countSpan) countSpan.textContent = data.saves_count;
-          if(data.saved) btn.classList.add('fill-purple-600'); else btn.classList.remove('fill-purple-600');
-        })
-        .finally(()=> btn.disabled=false);
+    btn.addEventListener('click', async (e) => {
+      e.stopPropagation()
+  if (btn.dataset.loading === "1") return;
+  btn.dataset.loading = "1";
+
+  const postIdSave = btn.dataset.postIdSave || btn.getAttribute('data-post-id-save');
+  if(!postIdSave) return;
+
+  try {
+    const res = await fetch(`/save/${postIdSave}/`, {
+      method: 'POST',
+      headers: {
+        'X-CSRFToken': getCookie('csrftoken'),
+        'Content-Type': 'application/json'
+      }
     });
+
+    const data = await res.json();
+
+    const countSpan = btn.parentElement.querySelector('.save-count');
+    if(countSpan) countSpan.textContent = data.saves_count;
+
+    if(data.saved){
+      btn.classList.add('fill-purple-600');
+    } else {
+      btn.classList.remove('fill-purple-600');
+    }
+
+  } finally {
+    btn.dataset.loading = "0";
+  }
+
+});
   });
 
+
+  
   // Like buttons
   root.querySelectorAll('.like-btn').forEach(button => {
     if(button.dataset.init === '1') return;
@@ -178,36 +200,6 @@ document.querySelectorAll(".post-media").forEach((img) => {
   });
 });
 
-
-const saveBtn = document.querySelectorAll(".save-btn");
-
-saveBtn.forEach((btn) => {
-  btn.addEventListener("click", () => {
-    const postIdSave = btn.dataset.postIdSave;
-    btn.disabled = true;
-    fetch(`/save/${postIdSave}/`, {
-      method: "POST",
-      headers: {
-        "X-CSRFToken": getCookie("csrftoken"),
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => res.json())
-        .then((data) => {
-        const countSpan = btn.parentElement.querySelector(".save-count");
-        if (countSpan) countSpan.textContent = data.saves_count;
-
-        if (data.saved) {
-          btn.classList.add("fill-purple-600");
-        } else {
-          btn.classList.remove("fill-purple-600");
-        }
-      })
-      .finally(() => {
-        btn.disabled = false;
-      });
-  });
-});
 
 
 
