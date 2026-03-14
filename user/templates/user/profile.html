@@ -196,7 +196,7 @@
     {% for post in posts %}
     
 
-        <div class="bg-white shadow-lg select-none hover:shadow-2xl rounded-2xl w-full mb-10">
+        <div class="post-card transition-all duration-300 ease-out bg-white shadow-lg select-none hover:shadow-2xl rounded-2xl w-full mb-10">
             <!-- Post media -->
             {% if post.media and post.is_video %}
             <div class="w-full rounded-t-2xl overflow-hidden">
@@ -271,9 +271,12 @@
             <div class="flex {% if request.user == post.author %} justify-between {% else %} justify-end {% endif %} px-6 py-3 border-y mx-2 my-2 border-gray-200 text-gray-600 text-sm items-center">
                 <!-- Delete post -->
                  {% if post.author == request.user %}
-                 <button data-post-id="{{post.id}}" type="button" class="delete-btn bg-red-500 p-3 rounded-xl px-4 font-bold text-white active:scale-95 cursor-pointer">
-                    Delete Post
-                 </button>
+                 <form action="{% url 'syntaxandstories:delete_post' post.id %}" class="delete-post-form" method="post">
+                    {% csrf_token %}
+                    <button data-post-id="{{post.id}}"  type="submit" class="delete-btn bg-red-500 p-3 rounded-xl px-4 font-bold text-white active:scale-95 cursor-pointer">
+                        Delete Post
+                    </button>
+                    </form>
                  {% endif %}
 
 

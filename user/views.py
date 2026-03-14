@@ -244,10 +244,3 @@ def followers_list(request):
         following=request.user
     )
     
-    for follower in followers:
-        print(follower.follower)
-    context = {
-        'followers':followers
-    }
-
-    return render(request, 'user/followers_list.html', context)

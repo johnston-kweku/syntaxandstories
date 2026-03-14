@@ -299,27 +299,24 @@ if(savedTab){ savedTab.addEventListener('click', async () => { hideAll(); if(sav
 if (!postsSection?.classList.contains('hidden')) { setActiveTab(postsTab); } else if (!likedSection?.classList.contains('hidden')) { setActiveTab(likedTab); } else if (!savedSection?.classList.contains('hidden')) { setActiveTab(savedTab); }
 
 
+document.addEventListener("submit", async function(e) {
+  const form = e.target;
+  if(!form.classList.contains("delete-post-form")) return;
+  e.preventDefault()
 
-const deleteBtn = document.querySelectorAll(".delete-btn")
+  const postCard = form.closest(".post-card")
 
-deleteBtn.forEach((btn) => {
-  btn.addEventListener("click", () => {
-    const postId = btn.dataset.postId
-    console.log(postId)
-    fetch(`/delete/${postId}/`, {
-      method:'POST',
-      headers:{
-        'X-CSRFToken':getCookie('csrftoken'),
-        'Content-Type':'application/json'
-      }
-    })
-    .then(res => res.json())
-    .then((data) => {
-      if(data.success) {
-        console.log("Success")
-      }else{
-        console.log("Failure")
-      }
-    })
-  })
+  const response = await fetch(form.action, {
+    method:'POST',
+    body:new FormData(form)
+  });
+
+  if (response.ok) {
+    postCard.style.opacity = "0"
+    postCard.style.transform = "scale(0.95)";
+
+    setTimeout(() => {
+      postCard.remove()
+    }, 300)
+  }
 })

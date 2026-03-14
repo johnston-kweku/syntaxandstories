@@ -263,10 +263,9 @@ def delete_post(request, post_id):
     if request.method == 'POST':
         if request.user == post.author:
             post.delete()
-            return JsonResponse({
-                'success':True
-            })
+            # messages.success(request, "Post deleted successfully")
+            return render(request, 'user/profile.html')
+        
+        # messages.error(request, "Can only delete your own post")
     
-    return JsonResponse({
-        'success':False
-    })
+    
