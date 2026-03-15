@@ -69,7 +69,16 @@ python manage.py createsuperuser
 
 ## Screenshots
 
-Place screenshots in the `screenshots/` directory. File names should avoid special characters.
+Below are project screenshots (stored in the `screenshots/` directory):
+
+![Feed Page](screenshots/feed.png)
+![Feed Creation](screenshots/feed_1.png)
+![Feed Page 2](screenshots/feed_2.png)
+![Email Change System](screenshots/change_email.png)
+![Password Change System](screenshots/changepassword.png)
+![Settings](screenshots/settings.png)
+![Legal And About](screenshots/legal_and_about.png)
+![Profile](screenshots/profile.png)
 
 ## Contributing
 
