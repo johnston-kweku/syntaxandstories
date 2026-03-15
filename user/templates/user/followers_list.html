@@ -1,12 +1,31 @@
 {% extends 'syntaxandstories/base.html' %}
 
 {% block content %}
-<div class="bg-white text-black w-11/12 mx-auto">
-Hello
-{% for follower in followers %}
-{{follower.following}}
+<div class="border text-black w-11/12 sm:w-8/12 mx-auto">
+    <div class="flex flex-col items-start p-3 space-y-3`">
+        <button class="font-bold text-2xl " onclick="history.back()">
+            &larr; Back
+        </button>
+        <p class="bg-linear-to-r from-violet-600 to-fuchsia-600 bg-clip-text text-transparent text-2xl sm:text-4xl font-bold">
+            Followers
+        </p>
+    </div>
 
-{% endfor %}
+    {% for follower in followers %}
+    <div>
+        
+        {% if follower.follower.profile.profile_name %}
+        <p>
+            {{ follower.follower.profile.profile_name }}
+        </p>
+        {% else %}
+        <p>
+            {{follower.follower.first_name}}
+        </p>
+        {% endif %}
+    </div>
+    {% endfor %}
+
 </div>
 
 {% endblock content %}

@@ -178,10 +178,13 @@ document.querySelectorAll(".comment-form").forEach((form) => {
         <div class="flex-1">
             <div class="bg-gray-50 rounded-2xl px-4 py-3">
                 <div class="flex items-center justify-between mb-1">
-                    <h4 class="font-semibold text-gray-800">${data.username}</h4>
-                    <button class="text-gray-400 hover:text-gray-600">•••</button>
+                    <h4 class="font-semibold text-gray-800 text-xs">${data.username}</h4>
+                    <button class="options-btn text-gray-400 hover:text-gray-600">•••</button>
                 </div>
                 <p class="text-gray-700 text-sm">${data.content}</p>
+            </div>
+            <div class="flex items-center gap-4 mt-2 text-sm text-gray-600">
+              <span class="text-gray-400 text-xs">${data.created_at}</span>
             </div>
         </div>
     `;

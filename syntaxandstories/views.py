@@ -14,9 +14,9 @@ from .forms import PostForm
 
 # Create your views here.
 def home(request):
+    if request.user.is_authenticated:
+        pass
     return render(request, 'syntaxandstories/index.html')
-
-
 
 
 @login_required
@@ -50,7 +50,7 @@ def feed(request):
             num_comments=Count('comments', distinct=True),
             author_is_followed=Exists(follow_subquery)
         )
-        .order_by('-created_at')
+        # .order_by('-created_at')
     )
 
     # Scoring
@@ -179,11 +179,16 @@ def add_comment(request, post_id):
     if request.method == 'POST':
         post = Post.objects.get(id=post_id)
         content = request.POST.get('content')
-        comment = Comment.objects.create(
-            post=post,
-            author=request.user,
-            content=content
-         )
+        if content:
+            comment = Comment.objects.create(
+                post=post,
+                author=request.user,
+                content=content
+            )
+        else:
+            return JsonResponse({
+                'success':False
+            })
 
         # Return JSON with comment info
         return JsonResponse({

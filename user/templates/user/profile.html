@@ -140,10 +140,10 @@
                 <p class="text-sm">Posts</p>
             </li>
             <li>
-                <p id="follower-count" class="sm:text-4xl text-2xl">
-                    {{followers_count|default:"0"}}
-                </p>
-                <p class="text-sm">Followers</p>
+                <a href="{% url 'user:followers_list' %}">
+                    <p id="follower-count" class="sm:text-4xl text-2xl">{{followers_count|default:"0"}}</p>
+                    <p class="text-sm">Followers</p>
+                </a>
             </li>
             <li>
                 <p class="sm:text-4xl text-2xl">{{following_count|default:"0"}}</p>

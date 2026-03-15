@@ -244,3 +244,9 @@ def followers_list(request):
         following=request.user
     )
     
+    context = {
+        'followers':followers,
+        # 'avatar':follower.
+    }
+
+    return render(request, 'user/followers_list.html', context)
