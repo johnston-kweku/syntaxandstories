@@ -1,80 +1,84 @@
-SAS (SyntaxAndStories)
+# SAS (SyntaxAndStories)
 
-SAS is a Django-powered blogging and social platform designed for developers and writers to share articles, follow other users, and interact with content seamlessly. The platform combines traditional blogging features with social functionality and modern asynchronous interactions powered by AJAX.
+SAS is a Django-powered blogging and social platform for developers and writers. It combines article publishing, social features (follow, like, save), and AJAX-driven interactions for a responsive UX.
 
-Features
-Content Publishing
+Table of contents
+- Features
+- Tech stack
+- Requirements
+- Installation
+- Development
+- Troubleshooting
+- Contributing
+- License
 
-Create posts with title and content
+## Features
 
-Draft and publish workflow
+- Content publishing: title + content, drafts, prevent empty publishes
+- Dynamic delete and interactions via AJAX
+- Social: follow/unfollow, likes, saves
+- Profile pages (posts, liked, saved)
+- Feed: engagement ranking + time decay
+- Responsive UI built with TailwindCSS
 
-Prevent publishing empty posts
+## Tech Stack
 
-Delete posts dynamically without page reload (AJAX)
+- Backend: Python, Django
+- Frontend: HTML, TailwindCSS, JavaScript
+- Database (dev): SQLite
 
-Social Interaction
+## Requirements
 
-Follow and unfollow users
+- Python 3.10+ (recommendation)
+- Pip dependencies are in `requirements.txt` (project root)
 
-Like posts
+If you prefer Pipenv the repository also contains `Pipfile` (optional). The instructions below use `requirements.txt`.
 
-Save posts for later reading
+## Installation (quick start)
 
-View posts from followed users
+Clone and prepare the environment:
 
-Profile System
+```bash
+git clone https://github.com/johnston-kweku/syntaxandstories.git
+cd syntaxandstories
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
 
-Each user profile includes:
+Apply migrations and run the dev server:
 
-User's published posts
+```bash
+python manage.py migrate
+python manage.py runserver
+```
 
-Posts liked by the user
+## Development
 
-Posts saved by the user
+- Static assets are built with Tailwind; see `package.json` if you run a dev watcher (`npm run dev`).
+- To create a superuser:
 
-Change email without page reload
+```bash
+python manage.py createsuperuser
+```
 
-Change password without page reload
+## Troubleshooting
 
-Feed System
+- If you see migration or DB errors during development, removing `db.sqlite3` and re-running `migrate` can help (dev only).
+- If dependencies mismatch, recreate the virtualenv and reinstall: remove `.venv`, recreate and `pip install -r requirements.txt`.
 
-Engagement-based feed ranking
+## Screenshots
 
-Time decay to prioritize newer posts
+Place screenshots in the `screenshots/` directory. File names should avoid special characters.
 
-Feed balancing to prevent one user from dominating the timeline
+## Contributing
 
-Interactive UI
+Contributions welcome. Please open issues or PRs. Add a short `CONTRIBUTING.md` for contribution guidelines.
 
-AJAX-powered actions for smoother user experience
+## License
 
-Dynamic updates without full page refresh
+Add a `LICENSE` file to the project root. If you want MIT, Apache-2.0, or another license, let me know and I can add it.
 
-Responsive UI built with TailwindCSS
+---
+If you'd like, I can: add badges, create `CONTRIBUTING.md` and `LICENSE`, or switch the README to reference Pipenv commands instead. Tell me which.
 
-Key Technical Highlights
-
-AJAX-based interactions to reduce page reloads
-
-Django template inheritance for reusable layouts
-
-Feed ranking algorithm combining engagement score and time decay
-
-Follow system implemented with relational models
-
-Separation of views, templates, and business logic for maintainability
-
-Tech Stack
-
-Backend: Python, Django
-Frontend: HTML, TailwindCSS, JavaScript, AJAX
-Database: SQLite (development)
-
-![Feed Page](screenshots/feed.png)
-![Feed Creation](screenshots/feed_1.png)
-![Feed Page](screenshots/feed_2.png)
-![Email Change System](screenshots/change_email.png)
-![Password Change System](screenshots/changepassword.png)
-![Legal And About](screenshots/legal&about.png)
-![Profile](screenshots/profile.png)
